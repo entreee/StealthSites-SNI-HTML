@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black-White-Image</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Общие стили */
+        body {
+            font-family: 'Inter', sans-serif; /* Использование шрифта Inter */
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0; /* Светло-серый фон */
+            color: #333; /* Темно-серый текст */
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Шапка сайта */
+        header {
+            background-color: #ffffff; /* Белый фон */
+            border-bottom: 1px solid #e0e0e0; /* Светло-серая граница */
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Легкая тень */
+            border-radius: 0 0 10px 10px; /* Скругленные нижние углы */
+        }
+
+        header h1 {
+            margin: 0;
+            color: #222; /* Более темный серый для заголовка */
+            font-size: 2.8em;
+            letter-spacing: -0.5px;
+        }
+
+        header nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0 0 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap; /* Разрешить перенос на маленьких экранах */
+        }
+
+        header nav ul li {
+            margin: 0 18px;
+        }
+
+        header nav ul li a {
+            text-decoration: none;
+            color: #555; /* Средне-серый для ссылок */
+            font-weight: 600; /* Полужирный */
+            transition: color 0.3s ease, transform 0.2s ease;
+            padding: 5px 0;
+            position: relative;
+        }
+
+        header nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: #000; /* Черная линия при наведении */
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        header nav ul li a:hover {
+            color: #000; /* Черный при наведении */
+            transform: translateY(-2px); /* Легкий подъем */
+        }
+
+        header nav ul li a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        /* Секция Hero */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background-color: #e8e8e8; /* Немного темнее серый для hero */
+            margin-bottom: 40px;
+            border-radius: 15px; /* Скругленные углы */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .hero h2 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            color: #222;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap; /* Разрешить перенос */
+        }
+
+        .search-bar input[type="text"] {
+            padding: 15px 25px;
+            border: 1px solid #ccc;
+            border-radius: 8px; /* Более скругленные */
+            width: 70%;
+            max-width: 500px;
+            font-size: 1.1em;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .search-bar input[type="text"]:focus {
+            border-color: #999;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 0 3px rgba(153, 153, 153, 0.2);
+            outline: none;
+        }
+
+        .search-bar button {
+            padding: 15px 30px;
+            background-color: #000; /* Черная кнопка */
+            color: #fff;
+            border: none;
+            border-radius: 8px; /* Более скругленные */
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-bar button:hover {
+            background-color: #333; /* Темнее серый при наведении */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-bar button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Галерея изображений */
+        .image-gallery {
+            margin-bottom: 60px;
+        }
+
+        .image-gallery h3 {
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 40px;
+            color: #222;
+            position: relative;
+        }
+
+        .image-gallery h3::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background-color: #000;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px; /* Увеличенный отступ */
+        }
+
+        .image-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px; /* Более скругленные углы */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Более сильная тень */
+            background-color: #fff;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .image-item:hover {
+            transform: translateY(-5px); /* Эффект "подъема" при наведении */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Усиленная тень при наведении */
+        }
+
+        .image-item img {
+            width: 100%;
+            height: 220px; /* Немного выше изображения */
+            object-fit: cover;
+            display: block;
+            filter: grayscale(100%); /* Изначально черно-белое */
+            transition: filter 0.5s ease-in-out; /* Плавный переход для фильтра */
+            border-radius: 12px 12px 0 0; /* Скругленные верхние углы */
+        }
+
+        .image-item:hover img {
+            filter: grayscale(0%); /* Цветное при наведении */
+        }
+
+        .image-info {
+            padding: 15px;
+            text-align: center;
+            color: #444;
+            font-size: 1em;
+            font-weight: 500;
+        }
+
+        /* Кнопка "Загрузить ещё" */
+        .load-more-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .load-more-button {
+            padding: 15px 40px;
+            background-color: #555; /* Серая кнопка */
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .load-more-button:hover {
+            background-color: #777; /* Светлее серый при наведении */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .load-more-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Сообщение о загрузке */
+        .loading-message {
+            text-align: center;
+            padding: 20px;
+            font-size: 1.2em;
+            color: #777;
+        }
+
+        /* Призыв к действию */
+        .call-to-action {
+            text-align: center;
+            padding: 60px 20px;
+            background-color: #f5f5f5; /* Очень светло-серый */
+            margin-bottom: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .call-to-action h3 {
+            font-size: 3em;
+            margin-bottom: 30px;
+            color: #222;
+        }
+
+        .call-to-action button {
+            padding: 18px 45px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: 700;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .call-to-action button:hover {
+            background-color: #333;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+        }
+
+        .call-to-action button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Футер */
+        footer {
+            background-color: #222; /* Темно-серый футер */
+            color: #ccc; /* Светло-серый текст */
+            text-align: center;
+            padding: 25px 0;
+            border-top: 1px solid #444;
+            border-radius: 10px 10px 0 0; /* Скругленные верхние углы */
+            font-size: 0.95em;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Адаптивный дизайн */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2em;
+            }
+
+            header nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .hero h2 {
+                font-size: 2.5em;
+            }
+
+            .hero p {
+                font-size: 1.1em;
+            }
+
+            .search-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-bar input[type="text"] {
+                width: 90%;
+            }
+
+            .image-gallery h3 {
+                font-size: 2.2em;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr; /* Одна колонка на маленьких экранах */
+            }
+
+            .call-to-action h3 {
+                font-size: 2.5em;
+            }
+
+            .call-to-action button {
+                padding: 15px 30px;
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1>Black-White-Image</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Главная</a></li>
+                <li><a href="#">Категории</a></li>
+                <li><a href="#">О нас</a></li>
+                <li><a href="#">Контакты</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    <section class="hero">
+        <h2>Откройте для себя красоту в монохроме</h2>
+        <p>Ваш источник высококачественных стоковых изображений в уникальном стиле. Прикоснитесь к изображениям, чтобы увидеть их истинные цвета.</p>
+        <div class="search-bar">
+            <input type="text" placeholder="Искать изображения...">
+            <button>Найти</button>
+        </div>
+    </section>
+
+    <section class="image-gallery">
+        <h3>Популярные изображения</h3>
+        <div class="gallery-grid" id="imageGrid">
+            <!-- Изображения будут загружены сюда JavaScript'ом -->
+        </div>
+        <div class="load-more-container">
+            <button class="load-more-button" id="loadMoreBtn">Загрузить ещё</button>
+        </div>
+    </section>
+
+    <section class="call-to-action">
+        <h3>Готовы найти идеальное изображение?</h3>
+        <button>Начать поиск</button>
+    </section>
+</main>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2024 Black-White-Image. Все права защищены.</p>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const imageGrid = document.getElementById('imageGrid');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        let imageCount = 0; // Для уникальности случайных изображений
+        const IMAGE_BATCH_SIZE = 6; // Количество изображений для загрузки за раз
+
+        // Широкий список категорий для более разнообразных изображений
+        const categories = [
+            "пейзаж", "городской пейзаж", "архитектура", "природа", "животные",
+            "люди", "технологии", "еда", "путешествия", "искусство",
+            "абстракция", "мода", "спорт", "космос", "вода", "горы",
+            "лес", "океан", "пустыня", "цветы", "растения", "здания",
+            "улицы", "транспорт", "машины", "велосипеды", "самолеты",
+            "компьютеры", "телефоны", "гаджеты", "книги", "кофе", "десерты",
+            "фрукты", "овощи", "дикая природа", "домашние животные", "птицы",
+            "рыбы", "кошки", "собаки", "портреты", "группы людей", "лица",
+            "закаты", "рассветы", "ночное небо", "звезды", "галактики",
+            "дороги", "мосты", "тоннели", "поля", "фермы", "зерно",
+            "инструменты", "музыка", "танцы", "театр", "музеи", "галереи",
+            "скульптуры", "картины", "граффити", "уличное искусство",
+            "ретро", "винтаж", "минимализм", "геометрия", "текстуры", "узоры",
+            "свет", "тень", "отражения", "туман", "дождь", "снег", "лед",
+            "огонь", "дым", "облака", "небо", "солнце", "луна", "планеты",
+            "корабли", "лодки", "пляжи", "острова", "пальмы", "песок",
+            "волны", "подводный мир", "кораллы", "рыбы", "дайвинг", "серфинг",
+            "йога", "фитнес", "бег", "плавание", "велоспорт", "футбол",
+            "баскетбол", "теннис", "гольф", "шахматы", "музыкальные инструменты",
+            "гитара", "пианино", "барабаны", "скрипка", "флейта", "саксофон",
+            "микрофоны", "наушники", "студия", "концерт", "фестиваль",
+            "праздники", "вечеринки", "свадьбы", "дни рождения", "рождество",
+            "новый год", "хэллоуин", "пасха", "валентин", "подарки",
+            "украшения", "ювелирные изделия", "алмазы", "золото", "серебро",
+            "деньги", "финансы", "бизнесмены", "офис", "встречи", "графики",
+            "данные", "аналитика", "программирование", "кодинг", "разработка",
+            "веб-дизайн", "мобильные приложения", "искусственный интеллект",
+            "роботы", "дроны", "виртуальная реальность", "дополненная реальность",
+            "кибербезопасность", "сети", "серверы", "облачные технологии",
+            "дата-центры", "энергия", "солнечные панели", "ветряные турбины",
+            "электромобили", "зарядные станции", "экология", "переработка",
+            "устойчивое развитие", "глобальное потепление", "климат",
+            "здоровье", "медицина", "врачи", "больницы", "исследования",
+            "наука", "лаборатория", "микроскоп", "телескоп", "астрономия",
+            "биология", "химия", "физика", "математика", "география", "история",
+            "археология", "палеонтология", "геология", "метеорология",
+            "психология", "социология", "экономика", "политика", "право",
+            "образование", "школа", "университет", "студенты", "учителя",
+            "книги", "библиотеки", "чтение", "письмо", "творчество",
+            "вдохновение", "идеи", "концепции", "решения", "стратегии",
+            "планирование", "управление", "лидерство", "команда", "сотрудничество",
+            "общение", "презентации", "маркетинг", "реклама", "брендинг",
+            "продажи", "клиенты", "сервис", "поддержка", "обратная связь",
+            "успех", "достижения", "цели", "мечты", "мотивация", "вдохновение",
+            "счастье", "радость", "любовь", "дружба", "семья", "дети",
+            "родители", "бабушки", "дедушки", "внуки", "поколения",
+            "традиции", "культура", "религия", "духовность", "медитация",
+            "мир", "гармония", "спокойствие", "тишина", "природа", "красота"
+        ];
+
+        /**
+         * Генерирует короткое описательное название для изображения с помощью LLM.
+         * @param {string} keyword - Ключевое слово, связанное с изображением.
+         * @returns {Promise<string>} - Промис, который разрешается с сгенерированным названием.
+         */
+        async function generateImageTitle(keyword) {
+            let chatHistory = [];
+            const prompt = `Сгенерируй очень короткое, описательное название (2-5 слов, на русском языке) для стокового изображения, связанного с темой "${keyword}". Только название, без лишних слов.`;
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+            const payload = { contents: chatHistory };
+            // API ключ будет предоставлен средой Canvas
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    // Удаляем кавычки, если LLM их добавил
+                    return text.replace(/["«»]/g, '');
+                } else {
+                    console.error("LLM response structure unexpected:", result);
+                    return `Изображение по теме "${keyword}"`;
+                }
+            } catch (error) {
+                console.error("Error calling LLM API:", error);
+                return `Изображение по теме "${keyword}"`;
+            }
+        }
+
+        /**
+         * Загружает и отображает заданное количество изображений.
+         * Каждое изображение получает сгенерированное название.
+         * @param {number} num - Количество изображений для загрузки.
+         */
+        async function loadImages(num) {
+            // Отображаем сообщение о загрузке
+            const loadingMessage = document.createElement('div');
+            loadingMessage.textContent = 'Загрузка изображений... Пожалуйста, подождите.';
+            loadingMessage.classList.add('loading-message');
+            loadingMessage.id = 'loading-message';
+            imageGrid.appendChild(loadingMessage);
+            loadMoreBtn.disabled = true; // Отключаем кнопку во время загрузки
+
+            const imagePromises = [];
+            for (let i = 0; i < num; i++) {
+                const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+                // Используем Unsplash для реальных изображений по категории
+                const imgUrl = `https://source.unsplash.com/random/300x220?${randomCategory}&sig=${imageCount++}`;
+
+                // Создаем промис для каждого элемента изображения, включая генерацию названия
+                const imagePromise = generateImageTitle(randomCategory).then(title => {
+                    const item = document.createElement('div');
+                    item.classList.add('image-item');
+
+                    const img = document.createElement('img');
+                    img.src = imgUrl;
+                    img.alt = title; // Используем сгенерированное название как alt-текст
+                    img.onerror = function() {
+                        // Заглушка для неработающих изображений
+                        this.src = `https://placehold.co/300x220/cccccc/333333?text=Ошибка+загрузки`;
+                        this.style.filter = 'none'; // Убираем фильтр, чтобы заглушка была видна
+                    };
+                    img.style.filter = 'grayscale(100%)'; // Убеждаемся, что изображение изначально черно-белое
+
+                    const info = document.createElement('div');
+                    info.classList.add('image-info');
+                    info.textContent = title; // Отображаем сгенерированное название
+
+                    item.appendChild(img);
+                    item.appendChild(info);
+                    return item;
+                });
+                imagePromises.push(imagePromise);
+            }
+
+            // Ждем, пока все элементы изображения будут созданы, затем добавляем их
+            Promise.all(imagePromises).then(items => {
+                const existingLoadingMessage = document.getElementById('loading-message');
+                if (existingLoadingMessage) {
+                    existingLoadingMessage.remove(); // Удаляем сообщение о загрузке
+                }
+                items.forEach(item => imageGrid.appendChild(item));
+                loadMoreBtn.disabled = false; // Включаем кнопку обратно
+            }).catch(error => {
+                console.error("Ошибка при загрузке изображений:", error);
+                const existingLoadingMessage = document.getElementById('loading-message');
+                if (existingLoadingMessage) {
+                    existingLoadingMessage.textContent = 'Ошибка при загрузке изображений. Попробуйте еще раз.';
+                }
+                loadMoreBtn.disabled = false;
+            });
+        }
+
+        // Изначально загружаем больше изображений для "большой наполненности"
+        loadImages(IMAGE_BATCH_SIZE * 2); // Например, 12 изображений при первой загрузке
+
+        // Обработчик события для кнопки "Загрузить ещё"
+        loadMoreBtn.addEventListener('click', () => {
+            loadImages(IMAGE_BATCH_SIZE); // Загружаем еще 6 изображений при нажатии
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamVerse - Your Universe of Videos</title>
+    <meta name="description" content="StreamVerse: Watch, upload, and discover a universe of engaging videos, from trending content to educational series and entertainment.">
+    <meta name="keywords" content="video platform, online video, watch videos, upload videos, video streaming, entertainment, educational videos, vlogs, trending videos">
+    <meta name="author" content="StreamVerse Team">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Custom base styles and color palette */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark Blue-Gray */
+            color: #e2e8f0; /* Light Gray */
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: #edf2f7; /* Off-White */
+        }
+
+        /* Accent Color */
+        .text-accent-primary { color: #f6ad55; /* Orange-Yellow */ }
+        .bg-accent-primary { background-color: #f6ad55; }
+        .hover\:bg-accent-primary-dark:hover { background-color: #ed8936; /* Darker Orange */ }
+
+        /* Secondary Accent for UI elements */
+        .text-accent-secondary { color: #4fd1c5; /* Teal */ }
+        .bg-accent-secondary { background-color: #4fd1c5; }
+        .hover\:bg-accent-secondary-dark:hover { background-color: #38b2ac; /* Darker Teal */ }
+
+        /* Scrollbar styles (custom for dark theme) */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2d3748; /* Darker track */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4a5568; /* Gray thumb */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6a7a8e; /* Lighter gray on hover */
+        }
+
+        /* Navbar sticky and scroll effect */
+        .navbar-scrolled {
+            background-color: rgba(26, 32, 44, 0.95); /* Slightly transparent dark */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(8px);
+        }
+        .navbar-scrolled .nav-link {
+            color: #edf2f7; /* Ensure text is visible */
+        }
+        .navbar-scrolled .logo-text {
+            color: #f6ad55; /* Accent color for logo on scroll */
+        }
+
+        /* Video Card Hover Effect */
+        .video-card-hover {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .video-card-hover:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Input focus styles */
+        .custom-input:focus {
+            border-color: #f6ad55; /* Accent color border */
+            box-shadow: 0 0 0 3px rgba(246, 173, 85, 0.5); /* Accent color ring */
+            outline: none;
+        }
+
+        /* Basic Fade-in animation for JS-triggered elements */
+        .js-animate {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .js-animate.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+<header class="fixed top-0 left-0 w-full z-50 py-4 transition-all duration-300">
+    <nav class="container mx-auto flex flex-col md:flex-row justify-between items-center px-4 md:px-6 space-y-4 md:space-y-0">
+        <a href="#hero" class="flex items-center space-x-2 text-3xl font-bold text-white transition-colors duration-300 logo-text">
+            <i class="fas fa-play-circle text-accent-secondary"></i>
+            <span>StreamVerse</span>
+        </a>
+
+        <div class="hidden md:block relative w-full max-w-md">
+            <input type="text" id="desktop-search" placeholder="Поиск видео..." class="w-full bg-gray-700 text-white placeholder-gray-400 rounded-full py-2 pl-10 pr-4 custom-input border border-transparent">
+            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        </div>
+
+        <div class="flex items-center space-x-6">
+            <ul class="flex space-x-6">
+                <li><a href="#trending" class="nav-link text-white hover:text-accent-primary font-medium transition duration-300">В тренде</a></li>
+                <li><a href="#categories" class="nav-link text-white hover:text-accent-primary font-medium transition duration-300">Категории</a></li>
+                <li><a href="#upload" class="nav-link text-white hover:text-accent-primary font-medium transition duration-300">Загрузить</a></li>
+            </ul>
+            <button class="flex items-center space-x-2 text-white hover:text-accent-primary transition duration-300">
+                <img src="https://ui-avatars.com/api/?name=JS&background=f6ad55&color=fff&size=30&bold=true" alt="User Avatar" class="w-8 h-8 rounded-full border-2 border-accent-secondary">
+                <span class="hidden md:block">Профиль</span>
+            </button>
+        </div>
+
+        <div class="md:hidden relative w-full mt-4">
+            <input type="text" id="mobile-search" placeholder="Поиск видео..." class="w-full bg-gray-700 text-white placeholder-gray-400 rounded-full py-2 pl-10 pr-4 custom-input border border-transparent">
+            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        </div>
+    </nav>
+</header>
+
+<section id="hero" class="relative bg-gray-900 pt-28 pb-16 px-6 overflow-hidden">
+    <div class="container mx-auto flex flex-col lg:flex-row items-center gap-10">
+        <div class="lg:w-2/3 js-animate">
+            <div class="aspect-video bg-gray-800 rounded-xl overflow-hidden shadow-2xl relative">
+                <img src="https://images.pexels.com/photos/3184405/pexels-photo-3184405.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=720&w=1280" alt="Featured Video Thumbnail" class="w-full h-full object-cover">
+                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 hover:bg-opacity-20 transition-opacity cursor-pointer">
+                    <i class="fas fa-play-circle text-white text-7xl opacity-80 hover:opacity-100 transition-opacity"></i>
+                </div>
+            </div>
+        </div>
+        <div class="lg:w-1/3 text-center lg:text-left js-animate" style="animation-delay: 0.2s;">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">
+                Видео Дня: <span class="text-accent-primary">"Будущее ИИ"</span>
+            </h2>
+            <p class="text-lg text-gray-300 mb-6 leading-relaxed">
+                Погрузитесь в увлекательный мир искусственного интеллекта вместе с ведущими экспертами. Узнайте о последних прорывах и о том, как ИИ меняет наш мир.
+            </p>
+            <div class="flex justify-center lg:justify-start items-center space-x-4 text-gray-400 mb-6">
+                <span class="flex items-center"><i class="fas fa-eye mr-2"></i> 1.5M просмотров</span>
+                <span class="flex items-center"><i class="fas fa-clock mr-2"></i> 2 дня назад</span>
+            </div>
+            <button class="bg-accent-primary text-gray-900 px-8 py-3 rounded-full text-lg font-semibold shadow-lg hover:bg-accent-primary-dark transition duration-300 btn-hover-grow">
+                Смотреть Сейчас <i class="fas fa-play ml-2"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+<section id="trending" class="py-16 px-6 bg-gray-900">
+    <div class="container mx-auto">
+        <h2 class="text-4xl font-bold mb-10 text-center lg:text-left">
+            В <span class="text-accent-secondary">Трендах</span> Сегодня
+            <a href="#" class="text-sm font-normal text-gray-400 hover:text-accent-primary ml-4">Смотреть все <i class="fas fa-arrow-right ml-1 text-xs"></i></a>
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+            <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden video-card-hover js-animate">
+                <img src="https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=200&w=350" alt="Путешествие по Японии" class="w-full h-44 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-2 leading-tight">Путешествие в сердце Японии: Культура и Природа</h3>
+                    <p class="text-sm text-gray-400">Путешествия с Марией • 1.2M просмотров • 3 дня назад</p>
+                </div>
+            </div>
+            <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden video-card-hover js-animate" style="animation-delay: 0.05s;">
+                <img src="https://images.pexels.com/photos/3760067/pexels-photo-3760067.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=200&w=350" alt="Рецепт домашней пасты" class="w-full h-44 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-2 leading-tight">Лучший Домашний Рецепт Пасты за 30 Минут</h3>
+                    <p class="text-sm text-gray-400">Кулинарный Эксперт • 813K просмотров • 1 неделя назад</p>
+                </div>
+            </div>
+            <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden video-card-hover js-animate" style="animation-delay: 0.1s;">
+                <img src="https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=200&w=350" alt="Утренняя йога" class="w-full h-44 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-2 leading-tight">Утренняя Йога для Начинающих: 15 Минут Энергии</h3>
+                    <p class="text-sm text-gray-400">Здоровье & Фитнес • 307K просмотров • 5 дней назад</p>
+                </div>
+            </div>
+            <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden video-card-hover js-animate" style="animation-delay: 0.15s;">
+                <img src="https://images.pexels.com/photos/2078076/pexels-photo-2078076.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=200&w=350" alt="Истории успеха стартапов" class="w-full h-44 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-2 leading-tight">Как Стартап XXYZ Завоевал Рынок за Год</h3>
+                    <p class="text-sm text-gray-400">Бизнес Инсайты • 471K просмотров • 2 дня назад</p>
+                </div>
+            </div>
+            <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden video-card-hover js-animate" style="animation-delay: 0.2s;">
+                <img src="https://images.pexels.com/photos/10326442/pexels-photo-10326442.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=200&w=350" alt="Обзор новых технологий" class="w-full h-44 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-2 leading-tight">Топ-5 Гаджетов 2025 Года: Стоит ли Покупать?</h3>
+                    <p class="text-sm text-gray-400">Техно Обзоры • 980K просмотров • 4 дня назад</p>
+                </div>
+            </div>
+            <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden video-card-hover js-animate">
+                <img src="https://images.pexels.com/photos/3171837/pexels-photo-3171837.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=200&w=350" alt="Самые смешные животные" class="w-full h-44 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-2 leading-tight">Самые Смешные Моменты с Животными 2024</h3>
+                    <p class="text-sm text-gray-400">Юмор • 2.1M просмотров • 1 неделя назад</p>
+                </div>
+            </div>
+            <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden video-card-hover js-animate" style="animation-delay: 0.05s;">
+                <img src="https://images.pexels.com/photos/3473569/pexels-photo-3473569.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=200&w=350" alt="Документальный фильм о космосе" class="w-full h-44 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-2 leading-tight">Тайны Черных Дыр: Новые Открытия Астрономов</h3>
+                    <p class="text-sm text-gray-400">Наука • 750K просмотров • 6 дней назад</p>
+                </div>
+            </div>
+            <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden video-card-hover js-animate" style="animation-delay: 0.1s;">
+                <img src="https://images.pexels.com/photos/1572566/pexels-photo-1572566.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=200&w=350" alt="Гайд по фотографии" class="w-full h-44 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-2 leading-tight">5 Советов для Уличной Фотографии от Профессионала</h3>
+                    <p class="text-sm text-gray-400">Фото Искусство • 210K просмотров • 3 недели назад</p>
+                </div>
+            </div>
+            <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden video-card-hover js-animate" style="animation-delay: 0.15s;">
+                <img src="https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=200&w=350" alt="История древних цивилизаций" class="w-full h-44 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-2 leading-tight">Затерянные Города: Тайны Древних Цивилизаций</h3>
+                    <p class="text-sm text-gray-400">История • 1.1M просмотров • 2 дня назад</p>
+                </div>
+            </div>
+            <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden video-card-hover js-animate" style="animation-delay: 0.2s;">
+                <img src="https://images.pexels.com/photos/1109543/pexels-photo-1109543.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=200&w=350" alt="Изучение нового языка" class="w-full h-44 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-2 leading-tight">Как Выучить Новый Язык за 3 Месяца: Мой Опыт</h3>
+                    <p class="text-sm text-gray-400">Образование • 550K просмотров • 1 месяц назад</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="categories" class="py-16 px-6 bg-gray-800">
+    <div class="container mx-auto">
+        <h2 class="text-4xl font-bold mb-10 text-center lg:text-left">
+            Исследуйте <span class="text-accent-primary">Категории</span>
+            <a href="#" class="text-sm font-normal text-gray-400 hover:text-accent-secondary ml-4">Смотреть все <i class="fas fa-arrow-right ml-1 text-xs"></i></a>
+        </h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            <a href="#" class="flex flex-col items-center justify-center bg-gray-700 rounded-lg p-4 text-center hover:bg-gray-600 transition duration-200 js-animate">
+                <i class="fas fa-film text-4xl mb-3 text-white"></i>
+                <span class="text-lg font-semibold text-white">Развлечения</span>
+            </a>
+            <a href="#" class="flex flex-col items-center justify-center bg-gray-700 rounded-lg p-4 text-center hover:bg-gray-600 transition duration-200 js-animate" style="animation-delay: 0.05s;">
+                <i class="fas fa-lightbulb text-4xl mb-3 text-white"></i>
+                <span class="text-lg font-semibold text-white">Образование</span>
+            </a>
+            <a href="#" class="flex flex-col items-center justify-center bg-gray-700 rounded-lg p-4 text-center hover:bg-gray-600 transition duration-200 js-animate" style="animation-delay: 0.1s;">
+                <i class="fas fa-gamepad text-4xl mb-3 text-white"></i>
+                <span class="text-lg font-semibold text-white">Игры</span>
+            </a>
+            <a href="#" class="flex flex-col items-center justify-center bg-gray-700 rounded-lg p-4 text-center hover:bg-gray-600 transition duration-200 js-animate" style="animation-delay: 0.15s;">
+                <i class="fas fa-music text-4xl mb-3 text-white"></i>
+                <span class="text-lg font-semibold text-white">Музыка</span>
+            </a>
+            <a href="#" class="flex flex-col items-center justify-center bg-gray-700 rounded-lg p-4 text-center hover:bg-gray-600 transition duration-200 js-animate" style="animation-delay: 0.2s;">
+                <i class="fas fa-utensils text-4xl mb-3 text-white"></i>
+                <span class="text-lg font-semibold text-white">Кулинария</span>
+            </a>
+            <a href="#" class="flex flex-col items-center justify-center bg-gray-700 rounded-lg p-4 text-center hover:bg-gray-600 transition duration-200 js-animate" style="animation-delay: 0.25s;">
+                <i class="fas fa-camera text-4xl mb-3 text-white"></i>
+                <span class="text-lg font-semibold text-white">Влоги</span>
+            </a>
+            <a href="#" class="flex flex-col items-center justify-center bg-gray-700 rounded-lg p-4 text-center hover:bg-gray-600 transition duration-200 js-animate" style="animation-delay: 0.3s;">
+                <i class="fas fa-car text-4xl mb-3 text-white"></i>
+                <span class="text-lg font-semibold text-white">Авто</span>
+            </a>
+            <a href="#" class="flex flex-col items-center justify-center bg-gray-700 rounded-lg p-4 text-center hover:bg-gray-600 transition duration-200 js-animate" style="animation-delay: 0.35s;">
+                <i class="fas fa-paw text-4xl mb-3 text-white"></i>
+                <span class="text-lg font-semibold text-white">Животные</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section id="upload" class="py-16 px-6 bg-gray-900">
+    <div class="container mx-auto text-center js-animate">
+        <h2 class="text-4xl font-bold mb-6">
+            Поделитесь Своей Историей на <span class="text-accent-secondary">StreamVerse</span>
+        </h2>
+        <p class="text-lg text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+            Загружайте свои видео, находите свою аудиторию и станьте частью нашего растущего сообщества.
+            Это быстро, легко и совершенно бесплатно!
+        </p>
+        <button class="bg-accent-secondary text-gray-900 px-10 py-4 rounded-full text-lg font-semibold shadow-lg hover:bg-accent-secondary-dark transition duration-300 btn-hover-grow">
+            Начать Загрузку <i class="fas fa-upload ml-2"></i>
+        </button>
+    </div>
+</section>
+
+<footer class="bg-gray-900 text-gray-400 py-10 text-center text-sm border-t border-gray-700">
+    <div class="container mx-auto">
+        <p>&copy; 2025 StreamVerse. Все права защищены.</p>
+        <div class="mt-4 space-x-4">
+            <a href="#" class="hover:text-white transition duration-300">Политика конфиденциальности</a>
+            <span class="text-gray-600">|</span>
+            <a href="#" class="hover:text-white transition duration-300">Условия использования</a>
+            <span class="text-gray-600">|</span>
+            <a href="#" class="hover:text-white transition duration-300">Справка</a>
+        </div>
+        <div class="mt-6 flex justify-center space-x-6 text-xl">
+            <a href="#" class="hover:text-white transition duration-300" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="#" class="hover:text-white transition duration-300" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="hover:text-white transition duration-300" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="hover:text-white transition duration-300" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+        const header = document.querySelector('header');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const logoText = document.querySelector('.logo-text');
+
+        if (window.scrollY > 50) {
+            header.classList.add('navbar-scrolled');
+            navLinks.forEach(link => link.classList.add('text-white')); // Ensure links stay white on dark bg
+            logoText.classList.remove('text-white');
+        } else {
+            header.classList.remove('navbar-scrolled');
+            navLinks.forEach(link => link.classList.remove('text-gray-800'));
+            navLinks.forEach(link => link.classList.add('text-white')); // Set back to white if needed
+            logoText.classList.add('text-white');
+        }
+    });
+
+    // Intersection Observer for fade-in animations on scroll
+    const animateElements = document.querySelectorAll('.js-animate');
+
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1 // Element is 10% visible
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animated'); // Trigger the animation
+                observer.unobserve(entry.target); // Stop observing once animated
+            }
+        });
+    }, observerOptions);
+
+    animateElements.forEach(el => {
+        observer.observe(el);
+    });
+
+    // Hero section initial animation trigger (for immediate load)
+    document.addEventListener('DOMContentLoaded', () => {
+        // Give a slight delay to ensure Tailwind styles are applied before animating
+        setTimeout(() => {
+            document.querySelector('#hero .js-animate').classList.add('animated');
+            document.querySelector('#hero .js-animate:nth-child(2)').classList.add('animated');
+        }, 100);
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeeApiData - Доступ к данным нового поколения</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark background */
+            color: #e2e8f0; /* Light text */
+        }
+        .section-heading {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #fbd38d; /* Yellow-orange for headings */
+        }
+        .section-heading::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 60%;
+            height: 4px;
+            background-color: #fbd38d; /* Yellow-orange highlight */
+            border-radius: 9999px;
+        }
+        .card-bg {
+            background-color: #2d3748; /* Slightly lighter dark for cards */
+        }
+        .hover-effect:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .btn-primary {
+            background-color: #fbd38d; /* Yellow-orange button */
+            color: #1a202c; /* Dark text on button */
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        .btn-primary:hover {
+            background-color: #f6ad55; /* Darker yellow-orange on hover */
+            transform: scale(1.05);
+        }
+        .nav-link:hover {
+            color: #fbd38d; /* Yellow-orange on hover for nav links */
+        }
+        /* Custom scrollbar for dark theme */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2d3748;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #fbd38d;
+            border-radius: 10px;
+            border: 3px solid #2d3748;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f6ad55;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+<!-- Навигационная панель -->
+<nav class="bg-gray-900 shadow-lg py-4 px-6 md:px-12 fixed w-full z-10 rounded-b-lg">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="#" class="text-2xl font-bold flex items-center text-yellow-400">
+            BeeApiData
+        </a>
+        <div class="hidden md:flex space-x-8">
+            <a href="#about" class="text-gray-300 hover:text-yellow-400 font-medium rounded-md px-3 py-2 transition duration-300 ease-in-out nav-link">О нас</a>
+            <a href="#features" class="text-gray-300 hover:text-yellow-400 font-medium rounded-md px-3 py-2 transition duration-300 ease-in-out nav-link">Возможности</a>
+            <a href="#categories" class="text-gray-300 hover:text-yellow-400 font-medium rounded-md px-3 py-2 transition duration-300 ease-in-out nav-link">Категории данных</a>
+            <a href="#pricing" class="text-gray-300 hover:text-yellow-400 font-medium rounded-md px-3 py-2 transition duration-300 ease-in-out nav-link">Цены</a>
+            <a href="#testimonials" class="text-gray-300 hover:text-yellow-400 font-medium rounded-md px-3 py-2 transition duration-300 ease-in-out nav-link">Отзывы</a>
+            <a href="#faq" class="text-gray-300 hover:text-yellow-400 font-medium rounded-md px-3 py-2 transition duration-300 ease-in-out nav-link">FAQ</a>
+            <a href="#contact" class="text-gray-300 hover:text-yellow-400 font-medium rounded-md px-3 py-2 transition duration-300 ease-in-out nav-link">Контакты</a>
+        </div>
+        <button class="md:hidden text-gray-400 focus:outline-none focus:text-yellow-400">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+    </div>
+</nav>
+
+<!-- Секция Hero -->
+<header class="bg-gradient-to-r from-gray-900 to-black text-white py-24 md:py-32 text-center rounded-b-3xl shadow-xl">
+    <div class="container mx-auto px-6">
+        <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6 animate-fade-in-up text-yellow-400">
+            Разблокируйте Потенциал Открытых Данных с BeeApiData
+        </h1>
+        <p class="text-lg md:text-xl mb-10 max-w-3xl mx-auto opacity-90 animate-fade-in-up delay-200">
+            Наш API предоставляет беспрепятственный доступ к обширным наборам данных для инноваций, исследований и аналитики.
+        </p>
+        <a href="#contact" class="btn-primary px-8 py-4 rounded-full text-lg font-semibold shadow-lg transition duration-300 ease-in-out transform hover:scale-105 animate-fade-in-up delay-400">
+            Начать сейчас
+        </a>
+    </div>
+</header>
+
+<!-- Секция О нас -->
+<section id="about" class="py-16 md:py-24 bg-gray-800 rounded-xl shadow-lg mx-6 md:mx-12 -mt-16 relative z-0">
+    <div class="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
+        <div class="md:w-1/2 mb-8 md:mb-0 md:pr-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 section-heading text-yellow-400">О BeeApiData</h2>
+            <p class="text-gray-300 text-lg leading-relaxed mb-4">
+                Мы верим в силу открытых данных для стимулирования инноваций и прозрачности. BeeApiData разработан, чтобы предоставить разработчикам, исследователям и аналитикам легкий, программный доступ к широкому спектру общедоступных наборов данных.
+            </p>
+            <p class="text-gray-300 text-lg leading-relaxed">
+                Будь то экономические показатели, данные о погоде, демографическая информация или научные исследования, наша платформа упрощает получение, анализ и использование данных для ваших проектов.
+            </p>
+        </div>
+        <div class="md:w-1/2">
+            <img src="https://placehold.co/600x400/1a202c/FFD700?text=Визуализация+данных" alt="Визуализация данных" class="rounded-xl shadow-lg w-full h-auto object-cover border-2 border-yellow-400">
+        </div>
+    </div>
+</section>
+
+<!-- Секция Возможности -->
+<section id="features" class="py-16 md:py-24 bg-gray-900">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-12 section-heading text-yellow-400 mx-auto">Ключевые возможности</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div class="card-bg p-8 rounded-xl shadow-lg hover-effect flex flex-col items-center border border-gray-700">
+                <div class="bg-yellow-800 text-yellow-200 rounded-full p-4 mb-6">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-4 text-yellow-400">Быстрый доступ</h3>
+                <p class="text-gray-400">Получайте доступ к данным с молниеносной скоростью благодаря нашей оптимизированной инфраструктуре API.</p>
+            </div>
+            <div class="card-bg p-8 rounded-xl shadow-lg hover-effect flex flex-col items-center border border-gray-700">
+                <div class="bg-yellow-800 text-yellow-200 rounded-full p-4 mb-6">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-4 text-yellow-400">Надежность</h3>
+                <p class="text-gray-400">Наслаждайтесь высокой доступностью и надежностью для всех ваших потребностей в данных.</p>
+            </div>
+            <div class="card-bg p-8 rounded-xl shadow-lg hover-effect flex flex-col items-center border border-gray-700">
+                <div class="bg-yellow-800 text-yellow-200 rounded-full p-4 mb-6">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-4 text-yellow-400">Простая интеграция</h3>
+                <p class="text-gray-400">Легко интегрируйте наш API в свои приложения с помощью всеобъемлющей документации.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Секция Категории данных -->
+<section id="categories" class="py-16 md:py-24 bg-gray-800 rounded-xl shadow-lg mx-6 md:mx-12">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-12 section-heading text-yellow-400 mx-auto">Наши категории данных</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="card-bg p-6 rounded-lg shadow-md flex flex-col items-center hover-effect border border-gray-700">
+                <img src="https://placehold.co/150x100/2d3748/FFD700?text=Экономика" alt="Изображение экономических данных" class="mb-4 rounded-md border border-yellow-400">
+                <h3 class="text-xl font-semibold mb-2 text-yellow-400">Экономика</h3>
+                <p class="text-gray-400 text-sm">ВВП, инфляция, занятость и другие макроэкономические показатели.</p>
+            </div>
+            <div class="card-bg p-6 rounded-lg shadow-md flex flex-col items-center hover-effect border border-gray-700">
+                <img src="https://placehold.co/150x100/2d3748/FFD700?text=Погода" alt="Изображение погодных данных" class="mb-4 rounded-md border border-yellow-400">
+                <h3 class="text-xl font-semibold mb-2 text-yellow-400">Погода</h3>
+                <p class="text-gray-400 text-sm">Исторические и текущие данные о погоде, прогнозы.</p>
+            </div>
+            <div class="card-bg p-6 rounded-lg shadow-md flex flex-col items-center hover-effect border border-gray-700">
+                <img src="https://placehold.co/150x100/2d3748/FFD700?text=Демография" alt="Изображение демографических данных" class="mb-4 rounded-md border border-yellow-400">
+                <h3 class="text-xl font-semibold mb-2 text-yellow-400">Демография</h3>
+                <p class="text-gray-400 text-sm">Данные о населении, возрастных группах, распределении.</p>
+            </div>
+            <div class="card-bg p-6 rounded-lg shadow-md flex flex-col items-center hover-effect border border-gray-700">
+                <img src="https://placehold.co/150x100/2d3748/FFD700?text=Здравоохранение" alt="Изображение данных о здравоохранении" class="mb-4 rounded-md border border-yellow-400">
+                <h3 class="text-xl font-semibold mb-2 text-yellow-400">Здравоохранение</h3>
+                <p class="text-gray-400 text-sm">Статистика заболеваний, данные о больницах, общественное здравоохранение.</p>
+            </div>
+            <div class="card-bg p-6 rounded-lg shadow-md flex flex-col items-center hover-effect border border-gray-700">
+                <img src="https://placehold.co/150x100/2d3748/FFD700?text=Образование" alt="Изображение данных об образовании" class="mb-4 rounded-md border border-yellow-400">
+                <h3 class="text-xl font-semibold mb-2 text-yellow-400">Образование</h3>
+                <p class="text-gray-400 text-sm">Статистика школ, успеваемость студентов, данные о финансировании.</p>
+            </div>
+            <div class="card-bg p-6 rounded-lg shadow-md flex flex-col items-center hover-effect border border-gray-700">
+                <img src="https://placehold.co/150x100/2d3748/FFD700?text=Транспорт" alt="Изображение данных о транспорте" class="mb-4 rounded-md border border-yellow-400">
+                <h3 class="text-xl font-semibold mb-2 text-yellow-400">Транспорт</h3>
+                <p class="text-gray-400 text-sm">Данные о трафике, общественном транспорте, инфраструктуре.</p>
+            </div>
+            <div class="card-bg p-6 rounded-lg shadow-md flex flex-col items-center hover-effect border border-gray-700">
+                <img src="https://placehold.co/150x100/2d3748/FFD700?text=Окруж.среда" alt="Изображение экологических данных" class="mb-4 rounded-md border border-yellow-400">
+                <h3 class="text-xl font-semibold mb-2 text-yellow-400">Окружающая среда</h3>
+                <p class="text-gray-400 text-sm">Данные о загрязнении, качестве воздуха, водных ресурсах.</p>
+            </div>
+            <div class="card-bg p-6 rounded-lg shadow-md flex flex-col items-center hover-effect border border-gray-700">
+                <img src="https://placehold.co/150x100/2d3748/FFD700?text=Наука" alt="Изображение научных данных" class="mb-4 rounded-md border border-yellow-400">
+                <h3 class="text-xl font-semibold mb-2 text-yellow-400">Наука и Исследования</h3>
+                <p class="text-gray-400 text-sm">Данные из различных научных областей для исследований.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Секция Как это работает -->
+<section class="py-16 md:py-24 bg-gray-900">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-12 section-heading text-yellow-400 mx-auto">Как это работает</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div class="card-bg flex flex-col items-center p-6 rounded-xl shadow-lg hover-effect border border-gray-700">
+                <div class="bg-yellow-800 text-yellow-200 rounded-full p-4 mb-6 text-2xl font-bold">1</div>
+                <h3 class="text-xl font-semibold mb-4 text-yellow-400">Зарегистрируйтесь</h3>
+                <p class="text-gray-400">Создайте бесплатную учетную запись, чтобы получить свой ключ API и доступ к документации.</p>
+            </div>
+            <div class="card-bg flex flex-col items-center p-6 rounded-xl shadow-lg hover-effect border border-gray-700">
+                <div class="bg-yellow-800 text-yellow-200 rounded-full p-4 mb-6 text-2xl font-bold">2</div>
+                <h3 class="text-xl font-semibold mb-4 text-yellow-400">Интегрируйте</h3>
+                <p class="text-gray-400">Используйте наш API в своих приложениях, веб-сайтах или аналитических инструментах.</p>
+            </div>
+            <div class="card-bg flex flex-col items-center p-6 rounded-xl shadow-lg hover-effect border border-gray-700">
+                <div class="bg-yellow-800 text-yellow-200 rounded-full p-4 mb-6 text-2xl font-bold">3</div>
+                <h3 class="text-xl font-semibold mb-4 text-yellow-400">Инновации</h3>
+                <p class="text-gray-400">Создавайте новые решения и получайте ценные идеи, используя силу открытых данных.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Секция Цены -->
+<section id="pricing" class="py-16 md:py-24 bg-gray-800 rounded-xl shadow-lg mx-6 md:mx-12">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-12 section-heading text-yellow-400 mx-auto">Наши тарифные планы</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- План Базовый -->
+            <div class="card-bg p-8 rounded-xl shadow-lg border-2 border-gray-700 hover-effect flex flex-col">
+                <h3 class="text-2xl font-bold mb-4 text-yellow-400">Базовый</h3>
+                <p class="text-gray-300 text-4xl font-extrabold mb-6">
+                    <span class="text-yellow-400">Бесплатно</span>
+                </p>
+                <ul class="text-gray-400 text-left mb-8 flex-grow">
+                    <li class="flex items-center mb-2"><svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>1000 запросов/день</li>
+                    <li class="flex items-center mb-2"><svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Базовые категории данных</li>
+                    <li class="flex items-center"><svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Стандартная поддержка</li>
+                </ul>
+                <button class="btn-primary px-6 py-3 rounded-full font-semibold shadow-md">
+                    Выбрать план
+                </button>
+            </div>
+
+            <!-- План Профессиональный -->
+            <div class="card-bg p-8 rounded-xl shadow-xl border-2 border-yellow-500 hover-effect flex flex-col">
+                <h3 class="text-2xl font-bold mb-4 text-yellow-400">Профессиональный</h3>
+                <p class="text-gray-300 text-4xl font-extrabold mb-6">
+                    <span class="text-yellow-400">$49</span>/мес
+                </p>
+                <ul class="text-gray-400 text-left mb-8 flex-grow">
+                    <li class="flex items-center mb-2"><svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Неограниченные запросы</li>
+                    <li class="flex items-center mb-2"><svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Все категории данных</li>
+                    <li class="flex items-center mb-2"><svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Приоритетная поддержка</li>
+                    <li class="flex items-center"><svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Расширенная аналитика</li>
+                </ul>
+                <button class="btn-primary px-6 py-3 rounded-full font-semibold shadow-md">
+                    Выбрать план
+                </button>
+            </div>
+
+            <!-- План Корпоративный -->
+            <div class="card-bg p-8 rounded-xl shadow-lg border-2 border-gray-700 hover-effect flex flex-col">
+                <h3 class="text-2xl font-bold mb-4 text-yellow-400">Корпоративный</h3>
+                <p class="text-gray-300 text-4xl font-extrabold mb-6">
+                    <span class="text-yellow-400">По запросу</span>
+                </p>
+                <ul class="text-gray-400 text-left mb-8 flex-grow">
+                    <li class="flex items-center mb-2"><svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Индивидуальные лимиты</li>
+                    <li class="flex items-center mb-2"><svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Все категории данных</li>
+                    <li class="flex items-center mb-2"><svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>Выделенный менеджер</li>
+                    <li class="flex items-center"><svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>SLA и безопасность</li>
+                </ul>
+                <button class="btn-primary px-6 py-3 rounded-full font-semibold shadow-md">
+                    Связаться с нами
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Секция Отзывы -->
+<section id="testimonials" class="py-16 md:py-24 bg-gray-900">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-12 section-heading text-yellow-400 mx-auto">Что говорят наши пользователи</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="card-bg p-8 rounded-xl shadow-lg border border-gray-700">
+                <p class="text-gray-300 text-lg italic mb-6">"BeeApiData полностью изменил то, как мы получаем и анализируем данные. Интерфейс интуитивно понятен, а производительность выдающаяся!"</p>
+                <p class="font-semibold text-yellow-400">- Анна Смирнова, Data Scientist</p>
+            </div>
+            <div class="card-bg p-8 rounded-xl shadow-lg border border-gray-700">
+                <p class="text-gray-300 text-lg italic mb-6">"Надежность API и обширный набор данных делают его незаменимым инструментом для наших исследовательских проектов. Очень рекомендую!"</p>
+                <p class="font-semibold text-yellow-400">- Иван Петров, Исследователь</p>
+            </div>
+            <div class="card-bg p-8 rounded-xl shadow-lg border border-gray-700">
+                <p class="text-gray-300 text-lg italic mb-6">"Поддержка клиентов на высшем уровне, а интеграция прошла без проблем. BeeApiData — это будущее открытых данных."</p>
+                <p class="font-semibold text-yellow-400">- Мария Козлова, Разработчик ПО</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Секция FAQ -->
+<section id="faq" class="py-16 md:py-24 bg-gray-800 rounded-xl shadow-lg mx-6 md:mx-12">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-12 section-heading text-yellow-400 mx-auto">Часто задаваемые вопросы</h2>
+        <div class="max-w-3xl mx-auto text-left">
+            <div class="card-bg p-6 rounded-lg shadow-md mb-4 border border-gray-700">
+                <h3 class="text-xl font-semibold mb-2 text-yellow-400">Что такое BeeApiData?</h3>
+                <p class="text-gray-400">BeeApiData — это платформа, предоставляющая программный доступ к обширным наборам открытых данных через простой и надежный API.</p>
+            </div>
+            <div class="card-bg p-6 rounded-lg shadow-md mb-4 border border-gray-700">
+                <h3 class="text-xl font-semibold mb-2 text-yellow-400">Как получить ключ API?</h3>
+                <p class="text-gray-400">Вы можете получить бесплатный ключ API, зарегистрировавшись на нашем сайте. После регистрации ключ будет доступен в вашем личном кабинете.</p>
+            </div>
+            <div class="card-bg p-6 rounded-lg shadow-md mb-4 border border-gray-700">
+                <h3 class="text-xl font-semibold mb-2 text-yellow-400">Какие типы данных доступны?</h3>
+                <p class="text-gray-400">Мы предлагаем данные из различных категорий, включая экономику, погоду, демографию, здравоохранение, образование, транспорт, окружающую среду и науку.</p>
+            </div>
+            <div class="card-bg p-6 rounded-lg shadow-md border border-gray-700">
+                <h3 class="text-xl font-semibold mb-2 text-yellow-400">Могу ли я использовать данные в коммерческих целях?</h3>
+                <p class="text-gray-400">Да, наши тарифные планы предусматривают различные уровни использования, включая коммерческое. Пожалуйста, ознакомьтесь с нашими условиями использования для получения подробной информации.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Секция Призыв к действию -->
+<section class="bg-gradient-to-r from-black to-gray-900 text-white py-16 md:py-20 text-center rounded-t-3xl shadow-xl">
+    <div class="container mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6 text-yellow-400">Готовы начать?</h2>
+        <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto opacity-90">
+            Присоединяйтесь к сообществу разработчиков, которые используют BeeApiData для создания будущего.
+        </p>
+        <a href="#contact" class="btn-primary px-8 py-4 rounded-full text-lg font-semibold shadow-md transform hover:scale-105">
+            Зарегистрируйтесь бесплатно
+        </a>
+    </div>
+</section>
+
+<!-- Секция Контакты -->
+<section id="contact" class="py-16 md:py-24 bg-gray-900">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-12 section-heading text-yellow-400 mx-auto">Свяжитесь с нами</h2>
+        <div class="max-w-xl mx-auto card-bg p-8 rounded-xl shadow-lg border border-gray-700">
+            <form>
+                <div class="mb-6 text-left">
+                    <label for="name" class="block text-gray-300 text-sm font-bold mb-2">Имя:</label>
+                    <input type="text" id="name" name="name" class="shadow appearance-none border border-gray-700 bg-gray-700 rounded-lg w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200 ease-in-out" placeholder="Ваше имя" required>
+                </div>
+                <div class="mb-6 text-left">
+                    <label for="email" class="block text-gray-300 text-sm font-bold mb-2">Email:</label>
+                    <input type="email" id="email" name="email" class="shadow appearance-none border border-gray-700 bg-gray-700 rounded-lg w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200 ease-in-out" placeholder="Ваш email" required>
+                </div>
+                <div class="mb-8 text-left">
+                    <label for="message" class="block text-gray-300 text-sm font-bold mb-2">Сообщение:</label>
+                    <textarea id="message" name="message" rows="6" class="shadow appearance-none border border-gray-700 bg-gray-700 rounded-lg w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200 ease-in-out" placeholder="Ваше сообщение" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary px-8 py-4 rounded-full font-semibold shadow-md transform hover:scale-105">
+                    Отправить сообщение
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Футер -->
+<footer class="bg-black text-white py-10 px-6 md:px-12 rounded-t-lg">
+    <div class="container mx-auto text-center">
+        <p class="mb-4 text-gray-400">&copy; 2025 BeeApiData. Все права защищены.</p>
+        <div class="flex justify-center space-x-6">
+            <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300 ease-in-out">Политика конфиденциальности</a>
+            <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300 ease-in-out">Условия использования</a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

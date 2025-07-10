@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message.me - Просто. Безопасно. Бесшовно.</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- jQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        /* Стили для анимации появления при прокрутке */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s ease-out, transform 0.8s ease-out;
+        }
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Стили для аккордеона FAQ */
+        .faq-question {
+            cursor: pointer;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 200px; /* Достаточная высота для ответа */
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+<!-- Header -->
+<header class="bg-white/90 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 border-b border-gray-200 shadow-sm">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <!-- Logo -->
+        <a href="#" class="flex items-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="text-blue-600" viewBox="0 0 256 256">
+                <path d="M232,128A104,104,0,0,1,57.75,222.14a8,8,0,0,1-8.3-11.85,88.08,88.08,0,0,0,34.8-38.48,8,8,0,0,1,15.26,5.32c-6,18.1-17.3,34.8-32.61,48.27A104.11,104.11,0,1,1,232,128ZM176,120a16,16,0,1,0-16,16A16,16,0,0,0,176,120ZM112,136a16,16,0,1,0-16-16A16,16,0,0,0,112,136Zm-48,0a16,16,0,1,0-16-16A16,16,0,0,0,64,136Z"></path>
+            </svg>
+            <span class="text-2xl font-bold text-gray-900">Message.me</span>
+        </a>
+        <!-- Navigation -->
+        <nav class="hidden md:flex items-center space-x-8">
+            <a href="#about" class="text-gray-600 hover:text-blue-600 transition-colors duration-300">О нас</a>
+            <a href="#features" class="text-gray-600 hover:text-blue-600 transition-colors duration-300">Возможности</a>
+            <a href="#security" class="text-gray-600 hover:text-blue-600 transition-colors duration-300">Безопасность</a>
+            <a href="#contact" class="text-gray-600 hover:text-blue-600 transition-colors duration-300">Контакты</a>
+        </nav>
+        <!-- CTA Button -->
+        <a href="#download" class="hidden sm:inline-block bg-blue-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
+            Скачать
+        </a>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main>
+
+    <!-- Hero Section -->
+    <section id="hero" class="pt-40 pb-24 bg-white">
+        <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+            <!-- Hero Text -->
+            <div class="text-center md:text-left">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-4">
+                    Общение без границ. <span class="text-blue-600">Защищено и просто.</span>
+                </h1>
+                <p class="text-lg text-gray-600 mb-8 max-w-xl mx-auto md:mx-0">
+                    Message.me объединяет скорость, надежность и первоклассную безопасность в одном интуитивно понятном приложении.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="#" class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-transform duration-300 hover:scale-105 shadow-lg flex items-center justify-center">
+                        <i class="fa-brands fa-windows mr-3"></i> Скачать для Windows
+                    </a>
+                    <a href="#download" class="bg-gray-200 text-gray-800 px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-300 transition-transform duration-300 hover:scale-105 shadow-lg">
+                        Все платформы
+                    </a>
+                </div>
+            </div>
+            <!-- Hero Image -->
+            <div class="relative">
+                <img src="https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="[Изображение женщины, счастливо использующей смартфон]" class="rounded-xl shadow-2xl w-full h-auto object-cover">
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-gray-50">
+        <div class="container mx-auto px-6 scroll-reveal">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Создано для настоящего общения</h2>
+                <div class="w-24 h-1.5 bg-blue-600 mx-auto mb-8 rounded-full"></div>
+                <p class="max-w-3xl mx-auto text-gray-600 text-lg leading-relaxed mb-12">
+                    В мире постоянного информационного шума мы верим в силу простого и прямого общения. Message.me был создан на принципе, что оставаться на связи должно быть легко и безопасно. Мы убрали все лишнее, чтобы сосредоточиться на том, что действительно важно: быстрый, надежный и конфиденциальный обмен сообщениями, который соединяет вас с близкими без компромиссов.
+                </p>
+            </div>
+            <div class="max-w-5xl mx-auto">
+                <img src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="[Изображение команды, работающей вместе]" class="rounded-xl shadow-xl w-full h-auto">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Все, что нужно для комфортного общения</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">Каждая функция разработана с мыслью о вашем удобстве и безопасности.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature Card 1 -->
+                <div class="bg-gray-50 p-8 rounded-xl scroll-reveal shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                    <div class="flex items-center justify-center h-16 w-16 bg-blue-100 text-blue-600 rounded-full mx-auto mb-6">
+                        <i class="fa-solid fa-shield-halved text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Сквозное шифрование</h3>
+                    <p class="text-gray-600">Ваши переписки принадлежат только вам. Благодаря передовому шифрованию, ваша конфиденциальность — наш главный приоритет.</p>
+                </div>
+                <!-- Feature Card 2 -->
+                <div class="bg-gray-50 p-8 rounded-xl scroll-reveal shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300" style="transition-delay: 100ms;">
+                    <div class="flex items-center justify-center h-16 w-16 bg-blue-100 text-blue-600 rounded-full mx-auto mb-6">
+                        <i class="fa-solid fa-sync-alt text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Синхронизация между устройствами</h3>
+                    <p class="text-gray-600">Начните чат на телефоне и закончите на компьютере. Ваши сообщения всегда синхронизированы.</p>
+                </div>
+                <!-- Feature Card 3 -->
+                <div class="bg-gray-50 p-8 rounded-xl scroll-reveal shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300" style="transition-delay: 200ms;">
+                    <div class="flex items-center justify-center h-16 w-16 bg-blue-100 text-blue-600 rounded-full mx-auto mb-6">
+                        <i class="fa-solid fa-video text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">HD Аудио и Видеозвонки</h3>
+                    <p class="text-gray-600">Наслаждайтесь кристально чистым звуком и видео высокой четкости бесплатно, где бы вы ни находились.</p>
+                </div>
+                <!-- Feature Card 4 -->
+                <div class="bg-gray-50 p-8 rounded-xl scroll-reveal shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                    <div class="flex items-center justify-center h-16 w-16 bg-blue-100 text-blue-600 rounded-full mx-auto mb-6">
+                        <i class="fa-solid fa-file-arrow-up text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Обмен файлами любого типа</h3>
+                    <p class="text-gray-600">Отправляйте документы, фотографии и видео без ограничений по размеру и формату, быстро и безопасно.</p>
+                </div>
+                <!-- Feature Card 5 -->
+                <div class="bg-gray-50 p-8 rounded-xl scroll-reveal shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300" style="transition-delay: 100ms;">
+                    <div class="flex items-center justify-center h-16 w-16 bg-blue-100 text-blue-600 rounded-full mx-auto mb-6">
+                        <i class="fa-solid fa-users text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Групповые чаты и каналы</h3>
+                    <p class="text-gray-600">Создавайте группы для семьи и друзей или ведите публичные каналы для своей аудитории. Возможности безграничны.</p>
+                </div>
+                <!-- Feature Card 6 -->
+                <div class="bg-gray-50 p-8 rounded-xl scroll-reveal shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300" style="transition-delay: 200ms;">
+                    <div class="flex items-center justify-center h-16 w-16 bg-blue-100 text-blue-600 rounded-full mx-auto mb-6">
+                        <i class="fa-solid fa-face-smile text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Стикеры и GIF</h3>
+                    <p class="text-gray-600">Выражайте эмоции ярче с помощью тысяч бесплатных стикеров и GIF-анимаций, интегрированных прямо в чат.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section id="security" class="py-24 bg-gray-50">
+        <div class="container mx-auto px-6 scroll-reveal">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="text-center lg:text-left">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Ваша конфиденциальность — <br>наш главный приоритет</h2>
+                    <p class="text-lg text-gray-600 mb-8">Мы не просто говорим о безопасности, мы встраиваем ее в каждую строчку кода. Ваше доверие — это все для нас.</p>
+                    <ul class="space-y-4 text-left">
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-check-circle text-green-500 text-xl mt-1 mr-4"></i>
+                            <span><strong class="text-gray-800">Мы не продаем ваши данные.</strong> Никогда. Наша бизнес-модель не основана на рекламе или торговле информацией.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-check-circle text-green-500 text-xl mt-1 mr-4"></i>
+                            <span><strong class="text-gray-800">Открытые протоколы.</strong> Мы используем проверенные временем криптографические протоколы с открытым исходным кодом.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-check-circle text-green-500 text-xl mt-1 mr-4"></i>
+                            <span><strong class="text-gray-800">Исчезающие сообщения.</strong> Установите таймер самоуничтожения для сообщений, чтобы не оставлять цифровых следов.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <img src="https://images.pexels.com/photos/60504/security-protection-anti-virus-software-60504.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="[Изображение замка, символизирующего безопасность]" class="rounded-xl shadow-xl w-full h-auto">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-24 bg-white">
+        <div class="container mx-auto px-6 scroll-reveal">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Что говорят наши пользователи</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">Мы гордимся тем, что нам доверяют тысячи людей по всему миру.</p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-50 p-8 rounded-xl shadow-lg">
+                    <p class="text-gray-600 italic mb-6">"Перешел на Message.me со всей семьей. Наконец-то мессенджер, который просто работает, без рекламы и навязывания ненужных функций. Видеозвонки — супер!"</p>
+                    <div class="flex items-center">
+                        <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&dpr=1" alt="[Фото пользователя]" class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <p class="font-bold text-gray-900">Алексей Петров</p>
+                            <p class="text-sm text-gray-500">Предприниматель</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-50 p-8 rounded-xl shadow-lg">
+                    <p class="text-gray-600 italic mb-6">"Как для разработчика, для меня важна безопасность и открытость. Тот факт, что Message.me использует открытые протоколы, стал решающим. Отличный продукт!"</p>
+                    <div class="flex items-center">
+                        <img src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=160&h=160&dpr=1" alt="[Фото пользователя]" class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <p class="font-bold text-gray-900">Мария Иванова</p>
+                            <p class="text-sm text-gray-500">Программный инженер</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="py-24 bg-blue-600 text-white">
+        <div class="container mx-auto px-6 text-center scroll-reveal">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Начните общаться безопасно уже сегодня</h2>
+            <p class="max-w-2xl mx-auto text-lg text-blue-100 mb-12">Доступно на всех популярных платформах. Ваши чаты всегда под рукой.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg flex items-center">
+                    <i class="fa-brands fa-apple text-2xl mr-3"></i> App Store
+                </a>
+                <a href="#" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg flex items-center">
+                    <i class="fa-brands fa-google-play text-2xl mr-3"></i> Google Play
+                </a>
+                <a href="#" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg flex items-center">
+                    <i class="fa-brands fa-windows text-2xl mr-3"></i> Windows
+                </a>
+                <a href="#" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg flex items-center">
+                    <i class="fa-brands fa-linux text-2xl mr-3"></i> Linux
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="contact" class="py-24 bg-gray-50">
+        <div class="container mx-auto px-6 scroll-reveal">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Остались вопросы?</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">Здесь вы найдете ответы на самые популярные из них.</p>
+            </div>
+            <div class="max-w-3xl mx-auto space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="faq-item bg-white border border-gray-200 rounded-lg shadow-sm">
+                    <div class="faq-question flex justify-between items-center p-6">
+                        <h4 class="font-semibold text-lg text-gray-800">Message.me действительно бесплатный?</h4>
+                        <i class="faq-icon fa-solid fa-chevron-down text-gray-500"></i>
+                    </div>
+                    <div class="faq-answer px-6 text-gray-600">
+                        <p>Да, абсолютно. Все основные функции, включая обмен сообщениями, аудио и видеозвонки, бесплатны и всегда будут бесплатными. У нас нет платных подписок или скрытых платежей.</p>
+                    </div>
+                </div>
+                <!-- FAQ Item 2 -->
+                <div class="faq-item bg-white border border-gray-200 rounded-lg shadow-sm">
+                    <div class="faq-question flex justify-between items-center p-6">
+                        <h4 class="font-semibold text-lg text-gray-800">Как вы зарабатываете деньги, если приложение бесплатное?</h4>
+                        <i class="faq-icon fa-solid fa-chevron-down text-gray-500"></i>
+                    </div>
+                    <div class="faq-answer px-6 text-gray-600">
+                        <p>Наша бизнес-модель не основана на продаже пользовательских данных или рекламе. В будущем мы планируем ввести дополнительные функции для бизнес-пользователей, которые будут платными. Для личного использования Message.me останется бесплатным.</p>
+                    </div>
+                </div>
+                <!-- FAQ Item 3 -->
+                <div class="faq-item bg-white border border-gray-200 rounded-lg shadow-sm">
+                    <div class="faq-question flex justify-between items-center p-6">
+                        <h4 class="font-semibold text-lg text-gray-800">Могут ли правоохранительные органы прочитать мои сообщения?</h4>
+                        <i class="faq-icon fa-solid fa-chevron-down text-gray-500"></i>
+                    </div>
+                    <div class="faq-answer px-6 text-gray-600">
+                        <p>Нет. Благодаря сквозному шифрованию, только вы и ваш собеседник можете читать сообщения. Даже мы, разработчики, не имеем доступа к ключам шифрования и не можем расшифровать вашу переписку.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <p class="text-gray-600 text-lg">Не нашли ответа? <a href="mailto:support@message.me" class="text-blue-600 font-semibold hover:underline">Свяжитесь с нашей поддержкой</a>.</p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-gray-800 text-white">
+    <div class="container mx-auto px-6 py-12">
+        <div class="grid md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-lg font-bold mb-4">Message.me</h3>
+                <p class="text-gray-400">Просто. Безопасно. Бесшовно.</p>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Навигация</h3>
+                <ul class="space-y-2">
+                    <li><a href="#about" class="text-gray-400 hover:text-white">О нас</a></li>
+                    <li><a href="#features" class="text-gray-400 hover:text-white">Возможности</a></li>
+                    <li><a href="#security" class="text-gray-400 hover:text-white">Безопасность</a></li>
+                    <li><a href="#download" class="text-gray-400 hover:text-white">Скачать</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Следите за нами</h3>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300"><i class="fab fa-twitter fa-lg"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300"><i class="fab fa-github fa-lg"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="mt-12 border-t border-gray-700 pt-8 flex flex-col sm:flex-row justify-between items-center">
+            <p class="text-gray-400 text-sm text-center sm:text-left">&copy; 2025 Message.me. Все права защищены. Это вымышленный сайт.</p>
+            <div class="text-gray-400 text-sm mt-4 sm:mt-0">
+                <a href="#" class="hover:text-white">Политика конфиденциальности</a>
+                <span class="mx-2">|</span>
+                <a href="#" class="hover:text-white">Условия использования</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- JavaScript for Interactivity -->
+<script>
+    $(document).ready(function() {
+        // Плавная прокрутка для навигационных ссылок
+        $('a[href^="#"]').on('click', function(event) {
+            var target = $(this.getAttribute('href'));
+            if (target.length) {
+                event.preventDefault();
+                $('html, body').stop().animate({
+                    scrollTop: target.offset().top - 80 // Коррекция на высоту фиксированного хедера
+                }, 800);
+            }
+        });
+
+        // Анимация появления при прокрутке
+        function revealOnScroll() {
+            var scrolled = $(window).scrollTop();
+            $('.scroll-reveal').each(function() {
+                var offsetTop = $(this).offset().top;
+                var windowHeight = $(window).height();
+                if (scrolled > offsetTop - windowHeight + 100) {
+                    $(this).addClass('visible');
+                }
+            });
+        }
+
+        // Инициализация при загрузке и прокрутке
+        revealOnScroll();
+        $(window).on('scroll', revealOnScroll);
+
+        // Логика для аккордеона FAQ
+        $('.faq-question').on('click', function() {
+            var item = $(this).closest('.faq-item');
+
+            // Закрыть другие открытые элементы
+            $('.faq-item.active').not(item).removeClass('active');
+
+            // Переключить текущий элемент
+            item.toggleClass('active');
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeatFlow - Ваш мир музыки, всегда с вами</title>
+    <meta name="description" content="BeatFlow: Миллионы песен, тысячи подкастов, персонализированные рекомендации. Слушайте то, что любите, совершенно бесплатно.">
+    <meta name="keywords" content="музыкальный стриминг, стриминг, музыка, плейлисты, альбомы, артисты, новые релизы, подкасты, аудио, онлайн музыка">
+    <meta name="author" content="BeatFlow Music">
+
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Добавлен font-display: swap для лучшей производительности загрузки шрифтов -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@300;400;700&display=swap&font-display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Custom CSS для стилей и анимаций в стиле Spotify */
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #B3B3B3; /* Светло-серый текст */
+            line-height: 1.6;
+            background-color: #121212; /* Темно-серый фон Spotify */
+            overflow-x: hidden; /* Предотвращает горизонтальную прокрутку из-за анимаций */
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            color: #FFFFFF; /* Белый для заголовков */
+            line-height: 1.2;
+        }
+
+        /* Цветовая палитра Spotify */
+        .text-spotify-green { color: #1DB954; }
+        .bg-spotify-green { background-color: #1DB954; }
+        .border-spotify-green { border-color: #1DB954; }
+
+        .bg-dark-spotify { background-color: #121212; }
+        .bg-medium-spotify { background-color: #282828; }
+        .bg-light-spotify { background-color: #535353; }
+
+        /* Анимации при загрузке и прокрутке */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero Section Background (можно сделать градиент или фоновое изображение) */
+        .hero-background-gradient {
+            background: linear-gradient(to bottom right, #331A4A, #121212); /* От фиолетового к черному */
+        }
+
+        /* Общие hover-эффекты для кнопок и карточек */
+        .btn-spotify-hover:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1); /* Слегка ярче */
+            transition: all 0.2s ease-in-out;
+        }
+        .card-hover-scale:hover {
+            transform: translateY(-5px); /* Легкий подъем */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Более выраженная тень */
+            transition: all 0.3s ease-in-out;
+        }
+        .playlist-card .play-button {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease-out;
+        }
+        .playlist-card:hover .play-button {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Аккордеон стили */
+        .accordion-header {
+            cursor: pointer;
+            padding: 1rem 0;
+            border-bottom: 1px solid #282828; /* Темнее, чем текст, но светлее фона */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+        .accordion-content.open {
+            max-height: 300px; /* Adjust as needed, large enough for content */
+        }
+        .accordion-icon {
+            transition: transform 0.3s ease-out;
+            color: #B3B3B3; /* Цвет иконки */
+        }
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+            color: #1DB954; /* Зеленая иконка при активном состоянии */
+        }
+
+        /* Слайдер для отзывов (или других карточек) */
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+        }
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-slide {
+            flex: 0 0 100%;
+            width: 100%;
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(40, 40, 40, 0.7); /* bg-medium-spotify с прозрачностью */
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 9999px; /* Full rounded */
+            cursor: pointer;
+            z-index: 10;
+            font-size: 1.5rem;
+            line-height: 1;
+            transition: background-color 0.3s ease;
+        }
+        .carousel-btn:hover {
+            background-color: #535353; /* Более светлый серый */
+        }
+        .carousel-btn-prev { left: 1rem; }
+        .carousel-btn-next { right: 1rem; }
+
+        /* Стиль для карточек без изображений */
+        .album-card-content {
+            height: 12rem; /* Увеличим высоту для текста и цитаты */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 1rem;
+            background-color: #282828;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out; /* Добавлено для плавного ховера */
+        }
+        .album-card-content:hover { /* Эффект ховера для текстовых карточек */
+            transform: translateY(-5px); /* Легкий подъем */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Более выраженная тень */
+        }
+        .album-card-content .album-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-bottom: 0.5rem;
+        }
+        .album-card-content .artist-name {
+            font-size: 1rem;
+            color: #B3B3B3;
+            margin-bottom: 1rem;
+        }
+        .album-card-content .song-quote {
+            font-style: italic;
+            font-size: 0.9rem;
+            color: #888888;
+            max-width: 90%; /* Ограничение ширины цитаты */
+        }
+        /* Стиль для заглушек иконок в секциях Home и About */
+        .placeholder-icon-block {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #282828;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: #1DB954;
+            font-size: 8rem;
+        }
+    </style>
+</head>
+<body class="bg-dark-spotify">
+
+<header id="main-header" class="bg-dark-spotify shadow-lg py-4 fixed top-0 w-full z-50 transition-all duration-300">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+        <a href="#" class="text-3xl font-bold text-white flex items-center">
+            <i class="fab fa-spotify text-spotify-green text-4xl mr-2"></i> BeatFlow
+        </a>
+        <button id="mobile-menu-button" class="md:hidden text-gray-400 focus:outline-none">
+            <i class="fas fa-bars text-2xl"></i>
+        </button>
+        <nav id="main-nav" class="hidden md:flex space-x-8 text-lg font-semibold">
+            <a href="#home" class="text-gray-300 hover:text-spotify-green transition duration-300">Главная</a>
+            <a href="#about" class="text-gray-300 hover:text-spotify-green transition duration-300">О нас</a>
+            <a href="#features" class="text-gray-300 hover:text-spotify-green transition duration-300">Возможности</a>
+            <a href="#playlists" class="text-gray-300 hover:text-spotify-green transition duration-300">Альбомы и Артисты</a>
+            <a href="#testimonials" class="text-gray-300 hover:text-spotify-green transition duration-300">Отзывы</a>
+            <a href="#faq" class="text-gray-300 hover:text-spotify-green transition duration-300">FAQ</a>
+            <a href="#contact" class="text-gray-300 hover:text-spotify-green transition duration-300">Контакты</a>
+        </nav>
+    </div>
+    <div id="mobile-menu-overlay" class="fixed inset-0 bg-dark-spotify z-50 flex flex-col items-center justify-center space-y-8 text-2xl font-bold hidden">
+        <button id="close-mobile-menu" class="absolute top-6 right-6 text-gray-400 focus:outline-none">
+            <i class="fas fa-times text-3xl"></i>
+        </button>
+        <a href="#home" class="text-gray-300 hover:text-spotify-green" onclick="document.getElementById('mobile-menu-overlay').classList.add('hidden')">Главная</a>
+        <a href="#about" class="text-gray-300 hover:text-spotify-green" onclick="document.getElementById('mobile-menu-overlay').classList.add('hidden')">О нас</a>
+        <a href="#features" class="text-gray-300 hover:text-spotify-green" onclick="document.getElementById('mobile-menu-overlay').classList.add('hidden')">Возможности</a>
+        <a href="#playlists" class="text-gray-300 hover:text-spotify-green" onclick="document.getElementById('mobile-menu-overlay').classList.add('hidden')">Альбомы и Артисты</a>
+        <a href="#testimonials" class="text-gray-300 hover:text-spotify-green" onclick="document.getElementById('mobile-menu-overlay').classList.add('hidden')">Отзывы</a>
+        <a href="#faq" class="text-gray-300 hover:text-spotify-green" onclick="document.getElementById('mobile-menu-overlay').classList.add('hidden')">FAQ</a>
+        <a href="#contact" class="text-gray-300 hover:text-spotify-green" onclick="document.getElementById('mobile-menu-overlay').classList.add('hidden')">Контакты</a>
+    </div>
+</header>
+
+<section id="home" class="relative hero-background-gradient min-h-screen flex items-center py-20 md:py-32">
+    <div class="container mx-auto px-4 text-center relative z-10 text-white">
+        <div class="flex flex-col md:flex-row items-center justify-center gap-10">
+            <!-- Удалено изображение, добавлен текстовый блок с иконкой -->
+            <div class="w-64 h-64 md:w-80 md:h-80 relative rounded-lg shadow-2xl overflow-hidden fade-in placeholder-icon-block" style="animation-delay: 0.2s;">
+                <i class="fas fa-music"></i>
+                <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+                <div class="absolute bottom-4 left-4 text-left">
+                    <p class="text-lg font-bold">Сейчас играет</p>
+                    <h3 class="text-3xl md:text-4xl font-extrabold leading-tight">Cosmic Echoes</h3>
+                    <p class="text-lg text-gray-300">Ambient Soundscapes</p>
+                </div>
+            </div>
+            <div class="text-center md:text-left fade-in" style="animation-delay: 0.4s;">
+                <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-6">
+                    Откройте свой BeatFlow
+                </h1>
+                <p class="text-lg md:text-xl mb-10 text-gray-200">
+                    Ваш мир музыки. Бесконечное вдохновение. Слушайте то, что любите, где угодно, когда угодно.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4 fade-in" style="animation-delay: 0.6s;">
+                    <a href="#features" class="inline-block bg-spotify-green text-white font-bold px-10 py-4 rounded-full shadow-lg hover:brightness-110 btn-spotify-hover">
+                        Начать слушать
+                    </a>
+                    <a href="#contact" class="inline-block border-2 border-white text-white font-bold px-10 py-4 rounded-full shadow-lg hover:bg-white hover:text-black btn-spotify-hover">
+                        Попробовать бесплатно
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="about" class="py-16 md:py-24 bg-dark-spotify">
+    <div class="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
+        <!-- Удалено изображение, добавлен текстовый блок с иконкой -->
+        <div class="fade-in">
+            <div class="w-full h-64 md:h-80 bg-medium-spotify rounded-lg shadow-2xl flex items-center justify-center text-spotify-green text-8xl">
+                <i class="fas fa-headphones-alt"></i>
+            </div>
+        </div>
+        <div class="fade-in" style="animation-delay: 0.1s;">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6 border-l-4 border-spotify-green pl-4">
+                О BeatFlow
+            </h2>
+            <p class="text-gray-300 text-lg mb-4">
+                BeatFlow — это ваша личная музыкальная вселенная. Мы создали платформу, где каждый найдет что-то для себя: от последних хитов до редких инди-треков, от зажигательных подкастов до расслабляющих звуковых ландшафтов. Наша миссия — соединить вас с музыкой, которая резонирует с вашей душой.
+            </p>
+            <p class="text-gray-400 text-base mb-4">
+                Благодаря миллионам треков от ведущих лейблов и независимых артистов, BeatFlow предлагает беспрецедентный доступ к миру аудиоконтента. Наши передовые алгоритмы персонализации постоянно совершенствуются, чтобы предлагать вам именно ту музыку, которую вы хотите слышать, даже если вы еще не знаете о ней.
+            </p>
+            <p class="text-gray-400 text-base">
+                Присоединяйтесь к сообществу BeatFlow и начните свое безграничное музыкальное путешествие уже сегодня.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section id="features" class="py-16 md:py-24 bg-medium-spotify">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-12 fade-in">
+            Наши Возможности
+        </h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <div class="bg-dark-spotify p-8 rounded-lg shadow-md card-hover-scale fade-in" style="animation-delay: 0.1s;">
+                <div class="text-spotify-green text-6xl mb-6">
+                    <i class="fas fa-compact-disc"></i>
+                </div>
+                <h3 class="text-2xl font-semibold mb-4 text-white">Огромная Библиотека</h3>
+                <p class="text-gray-400">
+                    Доступ к миллионам треков, альбомов и подкастов со всего мира, обновляемых ежедневно.
+                </p>
+            </div>
+            <div class="bg-dark-spotify p-8 rounded-lg shadow-md card-hover-scale fade-in" style="animation-delay: 0.2s;">
+                <div class="text-spotify-green text-6xl mb-6">
+                    <i class="fas fa-user-friends"></i>
+                </div>
+                <h3 class="text-2xl font-semibold mb-4 text-white">Персонализация</h3>
+                <p class="text-gray-400">
+                    Умные алгоритмы подбирают музыку специально для вас, основываясь на ваших предпочтениях.
+                </p>
+            </div>
+            <div class="bg-dark-spotify p-8 rounded-lg shadow-md card-hover-scale fade-in" style="animation-delay: 0.3s;">
+                <div class="text-spotify-green text-6xl mb-6">
+                    <i class="fas fa-download"></i>
+                </div>
+                <h3 class="text-2xl font-semibold mb-4 text-white">Офлайн-Доступ</h3>
+                <p class="text-gray-400">
+                    Загружайте любимые треки и слушайте их без подключения к интернету.
+                </p>
+            </div>
+            <div class="bg-dark-spotify p-8 rounded-lg shadow-md card-hover-scale fade-in" style="animation-delay: 0.4s;">
+                <div class="text-spotify-green text-6xl mb-6">
+                    <i class="fas fa-podcast"></i>
+                </div>
+                <h3 class="text-2xl font-semibold mb-4 text-white">Мир Подкастов</h3>
+                <p class="text-gray-400">
+                    Откройте для себя тысячи подкастов на любые темы, от новостей до развлечений.
+                </p>
+            </div>
+            <div class="bg-dark-spotify p-8 rounded-lg shadow-md card-hover-scale fade-in" style="animation-delay: 0.5s;">
+                <div class="text-spotify-green text-6xl mb-6">
+                    <i class="fas fa-headphones"></i>
+                </div>
+                <h3 class="text-2xl font-semibold mb-4 text-white">Высокое Качество</h3>
+                <p class="text-gray-400">
+                    Наслаждайтесь музыкой в потрясающем аудиокачестве, которое позволит вам услышать каждую деталь.
+                </p>
+            </div>
+            <div class="bg-dark-spotify p-8 rounded-lg shadow-md card-hover-scale fade-in" style="animation-delay: 0.6s;">
+                <div class="text-spotify-green text-6xl mb-6">
+                    <i class="fas fa-share-alt"></i>
+                </div>
+                <h3 class="text-2xl font-semibold mb-4 text-white">Делитесь с Друзьями</h3>
+                <p class="text-gray-400">
+                    Легко делитесь любимыми треками и плейлистами в социальных сетях.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="playlists" class="py-16 md:py-24 bg-dark-spotify">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-12 fade-in">
+            Популярные Альбомы и Артисты
+        </h2>
+        <div class="carousel-container relative max-w-5xl mx-auto fade-in" style="animation-delay: 0.1s;">
+            <div class="carousel-track flex">
+                <!-- Slide 1 -->
+                <div class="carousel-slide flex-none w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">Nevermind</h3>
+                            <p class="artist-name">Nirvana</p>
+                            <p class="song-quote">"Load up on guns, bring your friends..."</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">OK Computer</h3>
+                            <p class="artist-name">Radiohead</p>
+                            <p class="song-quote">"Fitter, happier, more productive..."</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">The Dark Side of the Moon</h3>
+                            <p class="artist-name">Pink Floyd</p>
+                            <p class="song-quote">"All that you touch and all that you see..."</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">Abbey Road</h3>
+                            <p class="artist-name">The Beatles</p>
+                            <p class="song-quote">"And in the end, the love you take..."</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="carousel-slide flex-none w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">My Beautiful Dark Twisted Fantasy</h3>
+                            <p class="artist-name">Kanye West</p>
+                            <p class="song-quote">"Can we get much higher?"</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">Lemonade</h3>
+                            <p class="artist-name">Beyoncé</p>
+                            <p class="song-quote">"I was served lemons, but I made lemonade."</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">1989</h3>
+                            <p class="artist-name">Taylor Swift</p>
+                            <p class="song-quote">"It's a new soundtrack, I could dance to this beat."</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">When We All Fall Asleep, Where Do We Go?</h3>
+                            <p class="artist-name">Billie Eilish</p>
+                            <p class="song-quote">"I'm the bad guy, duh."</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="carousel-slide flex-none w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">Scorpion</h3>
+                            <p class="artist-name">Drake</p>
+                            <p class="song-quote">"God's Plan, God's Plan..."</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">21</h3>
+                            <p class="artist-name">Adele</p>
+                            <p class="song-quote">"We could've had it all..."</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">DAMN.</h3>
+                            <p class="artist-name">Kendrick Lamar</p>
+                            <p class="song-quote">"Is it wickedness? Is it weakness?"</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">After Hours</h3>
+                            <p class="artist-name">The Weeknd</p>
+                            <p class="song-quote">"I'm going back to my darkest ways."</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- Slide 4 -->
+                <div class="carousel-slide flex-none w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">Master of Puppets</h3>
+                            <p class="artist-name">Metallica</p>
+                            <p class="song-quote">"Master of puppets I'm pulling your strings..."</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">"Awaken, My Love!"</h3>
+                            <p class="artist-name">Childish Gambino</p>
+                            <p class="song-quote">"Stay woke, niggas."</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">Hollywood's Bleeding</h3>
+                            <p class="artist-name">Post Malone</p>
+                            <p class="song-quote">"Hollywood's bleeding, but we're all still breathing."</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">Blonde</h3>
+                            <p class="artist-name">Frank Ocean</p>
+                            <p class="song-quote">"I thought that I was dreaming when you said you loved me."</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- Slide 5 -->
+                <div class="carousel-slide flex-none w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">Born to Run</h3>
+                            <p class="artist-name">Bruce Springsteen</p>
+                            <p class="song-quote">"Tramps like us, baby we were born to run."</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">Kind of Blue</h3>
+                            <p class="artist-name">Miles Davis</p>
+                            <p class="song-quote">"So What?"</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">Random Access Memories</h3>
+                            <p class="artist-name">Daft Punk</p>
+                            <p class="song-quote">"We're up all night to get lucky."</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="playlist-card bg-medium-spotify p-4 rounded-lg shadow-lg card-hover-scale group relative overflow-hidden">
+                        <div class="album-card-content">
+                            <h3 class="album-title">Parachutes</h3>
+                            <p class="artist-name">Coldplay</p>
+                            <p class="song-quote">"Look at the stars, look how they shine for you."</p>
+                        </div>
+                        <button class="play-button absolute bottom-4 right-4 bg-spotify-green text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300">
+                            <i class="fas fa-play text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-btn carousel-btn-prev">&#10094;</button>
+            <button class="carousel-btn carousel-btn-next">&#10095;</button>
+        </div>
+    </div>
+</section>
+
+<section id="testimonials" class="py-16 md:py-24 bg-medium-spotify">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-12 fade-in">Что говорят наши пользователи</h2>
+        <div class="carousel-container relative max-w-3xl mx-auto bg-dark-spotify p-8 rounded-lg shadow-xl fade-in" style="animation-delay: 0.1s;">
+            <div class="carousel-track">
+                <div class="carousel-slide px-4 flex flex-col items-center">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Фотография Анастасии" class="w-24 h-24 rounded-full object-cover mb-4 shadow-lg" loading="lazy">
+                    <p class="text-lg md:text-xl italic mb-6 text-gray-200">
+                        "BeatFlow — это лучшее, что случилось с моей музыкальной коллекцией. Рекомендации попадают в точку, и качество звука просто невероятное!"
+                    </p>
+                    <p class="font-bold text-lg text-white">- Анастасия, студентка</p>
+                </div>
+                <div class="carousel-slide px-4 flex flex-col items-center">
+                    <img src="https://images.unsplash.com/photo-1507003211169-e695c6add58e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Фотография Дмитрия" class="w-24 h-24 rounded-full object-cover mb-4 shadow-lg" loading="lazy">
+                    <p class="text-lg md:text-xl italic mb-6 text-gray-200">
+                        "Как диджей, я постоянно ищу новые треки. BeatFlow помогает мне открывать новые жанры и исполнителей, которых я бы никогда не нашел в другом месте."
+                    </p>
+                    <p class="font-bold text-lg text-white">- Дмитрий, диджей</p>
+                </div>
+                <div class="carousel-slide px-4 flex flex-col items-center">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Фотография Елизаветы" class="w-24 h-24 rounded-full object-cover mb-4 shadow-lg" loading="lazy">
+                    <p class="text-lg md:text-xl italic mb-6 text-gray-200">
+                        "Мне нравится, что я могу создавать плейлисты для любого настроения и делиться ими с друзьями. BeatFlow — это больше, чем просто плеер."
+                    </p>
+                    <p class="font-bold text-lg text-white">- Елизавета, блогер</p>
+                </div>
+            </div>
+            <button class="carousel-btn carousel-btn-prev">&#10094;</button>
+            <button class="carousel-btn carousel-btn-next">&#10095;</button>
+        </div>
+    </div>
+</section>
+
+<section id="faq" class="py-16 md:py-24 bg-dark-spotify">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-12 fade-in">Часто Задаваемые Вопросы</h2>
+        <div class="max-w-3xl mx-auto text-left">
+            <div class="bg-medium-spotify p-6 rounded-lg shadow-md mb-4 fade-in" style="animation-delay: 0.1s;">
+                <div class="accordion-header flex justify-between items-center text-xl font-semibold text-white">
+                    Чем BeatFlow отличается от других стриминговых сервисов?
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <div class="accordion-content pt-4 text-gray-300">
+                    BeatFlow фокусируется на уникальных алгоритмах персонализации, предлагая вам музыку, которую вы полюбите, и помогая открывать новых артистов, жанры и подкасты, исходя из ваших привычек прослушивания. Мы также предлагаем высочайшее качество звука и интуитивно понятный интерфейс.
+                </div>
+            </div>
+            <div class="bg-medium-spotify p-6 rounded-lg shadow-md mb-4 fade-in" style="animation-delay: 0.2s;">
+                <div class="accordion-header flex justify-between items-center text-xl font-semibold text-white">
+                    Как мне найти новые треки и артистов?
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <div class="accordion-content pt-4 text-gray-300">
+                    Используйте наш раздел "Обзор", где вы найдете курируемые плейлисты, чарты, новые релизы и тематические подборки. Наши персонализированные "Daily Mixes" и "Discover Weekly" также помогут вам открыть для себя новых исполнителей и жанры, которые соответствуют вашим вкусам.
+                </div>
+            </div>
+            <div class="bg-medium-spotify p-6 rounded-lg shadow-md mb-4 fade-in" style="animation-delay: 0.3s;">
+                <div class="accordion-header flex justify-between items-center text-xl font-semibold text-white">
+                    Могу ли я загружать музыку для офлайн-прослушивания?
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <div class="accordion-content pt-4 text-gray-300">
+                    Да, офлайн-прослушивание доступно для всех пользователей с премиум-подпиской. Вы можете скачивать любые треки, альбомы и плейлисты на ваше устройство и наслаждаться музыкой без подключения к интернета.
+                </div>
+            </div>
+            <div class="bg-medium-spotify p-6 rounded-lg shadow-md mb-4 fade-in" style="animation-delay: 0.4s;">
+                <div class="accordion-header flex justify-between items-center text-xl font-semibold text-white">
+                    Какие устройства поддерживают BeatFlow?
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <div class="accordion-content pt-4 text-gray-300">
+                    BeatFlow доступен на большинстве современных устройств: смартфонах и планшетах (iOS, Android), настольных компьютерах (Windows, macOS через приложение или веб-плеер), смарт-телевизорах, игровых консолях и многих умных колонках.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="bg-spotify-green text-white py-16 md:py-24">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-4xl md:text-5xl font-bold mb-8 fade-in">
+            Готовы начать свое музыкальное путешествие?
+        </h2>
+        <p class="text-lg md:text-xl mb-12 max-w-2xl mx-auto opacity-90 fade-in" style="animation-delay: 0.1s;">
+            Присоединяйтесь к миллионам слушателей BeatFlow прямо сейчас и откройте для себя мир музыки!
+        </p>
+        <a href="#" class="inline-block bg-white text-black font-bold px-10 py-4 rounded-full shadow-lg hover:bg-gray-200 btn-spotify-hover fade-in" style="animation-delay: 0.2s;">
+            Начать слушать бесплатно
+        </a>
+        <div class="mt-12 text-center text-lg opacity-90 fade-in" style="animation-delay: 0.3s;">
+            <p class="mb-2"><i class="fas fa-phone-alt mr-2"></i> +1 (800) 555-BEAT</p>
+            <p><i class="fas fa-envelope mr-2"></i> support@beatflow.com</p>
+        </div>
+    </div>
+</section>
+
+<footer class="bg-black text-gray-400 py-10">
+    <div class="container mx-auto px-4 grid md:grid-cols-4 gap-8">
+        <div>
+            <h4 class="text-xl font-bold text-white mb-4">BeatFlow</h4>
+            <p class="text-sm">
+                Ваш личный проводник в мир музыки. Мы предлагаем безграничные возможности для прослушивания, открытия и обмена любимыми треками.
+            </p>
+            <div class="flex space-x-4 mt-6">
+                <a href="#" class="text-gray-400 hover:text-spotify-green transition-colors"><i class="fab fa-facebook-f text-lg"></i></a>
+                <a href="#" class="text-gray-400 hover:text-spotify-green transition-colors"><i class="fab fa-twitter text-lg"></i></a>
+                <a href="#" class="text-gray-400 hover:text-spotify-green transition-colors"><i class="fab fa-instagram text-lg"></i></a>
+                <a href="#" class="text-gray-400 hover:text-spotify-green transition-colors"><i class="fab fa-youtube text-lg"></i></a>
+            </div>
+        </div>
+
+        <div>
+            <h4 class="text-xl font-bold text-white mb-4">Компания</h4>
+            <ul class="space-y-2 text-sm">
+                <li><a href="#about" class="hover:text-spotify-green transition-colors">О нас</a></li>
+                <li><a href="#features" class="hover:text-spotify-green transition-colors">Возможности</a></li>
+                <li><a href="#" class="hover:text-spotify-green transition-colors">Вакансии</a></li>
+                <li><a href="#" class="hover:text-spotify-green transition-colors">Для артистов</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h4 class="text-xl font-bold text-white mb-4">Сообщество</h4>
+            <ul class="space-y-2 text-sm">
+                <li><a href="#" class="hover:text-spotify-green transition-colors">Для разработчиков</a></li>
+                <li><a href="#" class="hover:text-spotify-green transition-colors">Реклама</a></li>
+                <li><a href="#" class="hover:text-spotify-green transition-colors">Инвесторам</a></li>
+                <li><a href="#testimonials" class="hover:text-spotify-green transition-colors">Отзывы</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h4 class="text-xl font-bold text-white mb-4">Приложение</h4>
+            <p class="text-sm mb-4">
+                Загрузите приложение BeatFlow и слушайте музыку на ходу.
+            </p>
+            <div class="space-y-3">
+                <a href="#" class="flex items-center bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-colors">
+                    <i class="fab fa-apple text-xl mr-3"></i>
+                    <div>
+                        <p class="text-xs">Загрузить в</p>
+                        <p class="text-base font-semibold">App Store</p>
+                    </div>
+                </a>
+                <a href="#" class="flex items-center bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-colors">
+                    <i class="fab fa-google-play text-xl mr-3"></i>
+                    <div>
+                        <p class="text-xs">Доступно в</p>
+                        <p class="text-base font-semibold">Google Play</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="border-t border-gray-800 mt-8 pt-6 text-center text-gray-500 text-xs">
+        &copy; 2025 BeatFlow Music. Все права защищены. | <a href="#" class="hover:text-spotify-green">Политика конфиденциальности</a> | <a href="#" class="hover:text-spotify-green">Условия использования</a>
+    </div>
+</footer>
+
+<script defer>
+    // Анимация fade-in при загрузке и прокрутке
+    const faders = document.querySelectorAll('.fade-in');
+
+    const appearOptions = {
+        threshold: 0.2, /* Триггер, когда 20% элемента видно */
+        rootMargin: "0px 0px -50px 0px" /* Отступ для более раннего или позднего срабатывания */
+    };
+
+    const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) {
+                return;
+            } else {
+                entry.target.classList.add('visible');
+                appearOnScroll.unobserve(entry.target);
+            }
+        });
+    }, appearOptions);
+
+    faders.forEach(fader => {
+        appearOnScroll.observe(fader);
+    });
+
+    // Мобильное меню
+    document.getElementById('mobile-menu-button').addEventListener('click', function() {
+        document.getElementById('mobile-menu-overlay').classList.remove('hidden');
+    });
+
+    document.getElementById('close-mobile-menu').addEventListener('click', function() {
+        document.getElementById('mobile-menu-overlay').classList.add('hidden');
+    });
+
+    // Плавная прокрутка для навигации
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.getElementById('mobile-menu-overlay').classList.add('hidden'); // Закрыть меню на мобильных
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Подсветка активного пункта меню при прокрутке и скрытие/появление шапки (для мобильных)
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('#main-nav a, #mobile-menu-overlay a');
+    const header = document.getElementById('main-header');
+    let lastScrollY = window.scrollY;
+
+    const navObserverOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.5 // Половина секции должна быть видна
+    };
+
+    const navObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const currentId = entry.target.id;
+                navLinks.forEach(link => {
+                    link.classList.remove('text-spotify-green');
+                    link.classList.add('text-gray-300'); // Сброс на базовый цвет
+                    if (link.getAttribute('href') === `#${currentId}`) {
+                        link.classList.remove('text-gray-300');
+                        link.classList.add('text-spotify-green'); // Выделение активного
+                    }
+                });
+            }
+        });
+    }, navObserverOptions);
+
+    sections.forEach(section => {
+        navObserver.observe(section);
+    });
+
+    // Скрытие/появление шапки при прокрутке (только для мобильных)
+    window.addEventListener('scroll', () => {
+        if (window.innerWidth < 768) { // Только для мобильных (md:hidden)
+            if (window.scrollY > lastScrollY && window.scrollY > 100) { // Прокрутка вниз
+                header.classList.remove('translate-y-0');
+                header.classList.add('-translate-y-full');
+            } else if (window.scrollY < lastScrollY) { // Прокрутка вверх
+                header.classList.remove('-translate-y-full');
+                header.classList.add('translate-y-0');
+            }
+        }
+        lastScrollY = window.scrollY;
+    });
+
+
+    // Аккордеон для FAQ
+    document.querySelectorAll('.accordion-header').forEach(header => {
+        header.addEventListener('click', () => {
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('.accordion-icon');
+
+            // Закрыть все остальные открытые аккордеоны
+            document.querySelectorAll('.accordion-content.open').forEach(openContent => {
+                if (openContent !== content) {
+                    openContent.classList.remove('open');
+                    openContent.style.maxHeight = '0';
+                    openContent.previousElementSibling.classList.remove('active');
+                    openContent.previousElementSibling.querySelector('.accordion-icon').classList.remove('rotate-180');
+                }
+            });
+
+            // Открыть/закрыть текущий аккордеон
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                content.style.maxHeight = '0';
+                header.classList.remove('active');
+                icon.classList.remove('rotate-180');
+            } else {
+                content.classList.add('open');
+                content.style.maxHeight = content.scrollHeight + "px"; // Устанавливаем высоту для анимации
+                header.classList.add('active');
+                icon.classList.add('rotate-180');
+            }
+        });
+    });
+
+    // Слайдер для плейлистов (теперь для альбомов/артистов)
+    const carouselTrack = document.querySelector('.carousel-track');
+    const carouselSlides = document.querySelectorAll('.carousel-slide');
+    const prevBtn = document.querySelector('.carousel-btn-prev');
+    const nextBtn = document.querySelector('.carousel-btn-next');
+    let slideIndex = 0;
+
+    function updateCarousel() {
+        // Вычисляем ширину слайда с учетом возможного наличия gap в grid (если carousel-slide сам является grid)
+        // или просто ширину первого слайда
+        const slideWidth = carouselSlides[0].offsetWidth; // Используем offsetWidth для получения полной ширины элемента
+        carouselTrack.style.transform = `translateX(${-slideIndex * slideWidth}px)`;
+    }
+
+    prevBtn.addEventListener('click', () => {
+        slideIndex = (slideIndex === 0) ? carouselSlides.length - 1 : slideIndex - 1;
+        updateCarousel();
+    });
+
+    nextBtn.addEventListener('click', () => {
+        slideIndex = (slideIndex === carouselSlides.length - 1) ? 0 : slideIndex + 1;
+        updateCarousel();
+    });
+
+    // Адаптация слайдера при изменении размера окна
+    window.addEventListener('resize', updateCarousel);
+    updateCarousel(); // Инициализация при загрузке
+
+    // Автоматическая прокрутка слайдера
+    setInterval(() => {
+        slideIndex = (slideIndex === carouselSlides.length - 1) ? 0 : slideIndex + 1;
+        updateCarousel();
+    }, 5000); // Смена слайда каждые 5 секунд
+
+</script>
+</body>
+</html>

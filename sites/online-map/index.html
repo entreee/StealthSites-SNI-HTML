@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPsik - Твой Мир, Упрощенный</title>
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom Styles & Configuration for Tailwind -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0f1f; /* A deep blue-black background */
+        }
+
+        /* Blue Neon Glow Effect for Text */
+        .neon-text {
+            text-shadow: 0 0 5px rgba(79, 70, 229, 0.7), 0 0 10px rgba(79, 70, 229, 0.5);
+        }
+
+        /* Blue Neon Glow Effect for Buttons and Cards */
+        .neon-glow {
+            box-shadow: 0 0 5px rgba(59, 130, 246, 0.4), 0 0 10px rgba(59, 130, 246, 0.3), inset 0 0 5px rgba(59, 130, 246, 0.2);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        .neon-glow:hover {
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.6), 0 0 20px rgba(59, 130, 246, 0.4), inset 0 0 8px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Animation for elements fading in */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-up.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="text-gray-300 antialiased">
+
+<!-- Header -->
+<header class="bg-gray-900/70 backdrop-blur-md sticky top-0 z-50 border-b border-blue-500/20">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <!-- Logo -->
+        <a href="#" class="flex items-center space-x-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400 neon-text">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span class="text-2xl font-bold text-white neon-text">MAPsik</span>
+        </a>
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex items-center space-x-8">
+            <a href="#about" class="text-gray-400 hover:text-blue-400 transition-colors">О нас</a>
+            <a href="#services" class="text-gray-400 hover:text-blue-400 transition-colors">Сервисы</a>
+            <a href="#contact" class="text-gray-400 hover:text-blue-400 transition-colors">Контакты</a>
+        </nav>
+
+        <!-- CTA Button -->
+        <a href="#contact" class="hidden md:inline-block bg-blue-600/80 text-white font-semibold px-5 py-2 rounded-lg neon-glow">
+            Начать
+        </a>
+
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main>
+    <!-- Hero Section -->
+    <section id="hero" class="py-20 md:py-32 relative overflow-hidden">
+        <!-- Background decorative grids -->
+        <div class="absolute inset-0 z-0 opacity-10">
+            <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_rgba(59,130,246,0.3)_0,_transparent_50%)]"></div>
+        </div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight mb-4 neon-text">
+                Твой Мир, Упрощенный.
+            </h1>
+            <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-8">
+                Интуитивные, быстрые и надежные онлайн-карты, созданные для современных исследований. Навигируйте с уверенностью, где бы вы ни находились.
+            </p>
+            <!-- Registration Form -->
+            <div class="mt-12 max-w-lg mx-auto">
+                <form id="registration-form" class="flex flex-col sm:flex-row gap-4">
+                    <input type="tel" id="phone-number" placeholder="Введите номер телефона" class="w-full px-5 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition placeholder-gray-500">
+                    <button type="submit" class="bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg neon-glow whitespace-nowrap">
+                        Отправить код
+                    </button>
+                </form>
+                <p id="form-message" class="mt-4 text-green-400 h-5"></p> <!-- Message area -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-900/50 animated-section">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="fade-in-up">
+                    <img src="https://images.pexels.com/photos/238118/pexels-photo-238118.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                         alt="[Изображение команды, работающей в современном темном офисе]"
+                         class="rounded-xl shadow-lg w-full h-auto object-cover neon-glow border border-blue-500/20"
+                         onerror="this.onerror=null;this.src='https://placehold.co/600x400/0a0f1f/3b82f6?text=Image+Not+Found';">
+                </div>
+                <div class="fade-in-up">
+                    <h2 class="text-3xl font-bold text-white mb-4 neon-text">Кто мы такие</h2>
+                    <p class="text-gray-400 mb-4">
+                        MAPsik был основан на простом принципе: картографические технологии должны быть доступными, мощными и приятными в использовании. Мы — команда разработчиков, дизайнеров и картографов, увлеченных созданием инструментов, которые соединяют людей с окружающим миром. Наша философия заключается в минимализме и функциональности, убирая все лишнее, чтобы вы могли сосредоточиться на главном — вашем путешествии.
+                    </p>
+                    <p class="text-gray-400">
+                        Мы верим в чистый дизайн, ориентированные на пользователя функции и приверженность конфиденциальности. Наша миссия — создавать картографические сервисы нового поколения, которым вы можете доверять и на которые можно положиться каждый день, зная, что ваши данные в безопасности.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 animated-section">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white neon-text">Наши Ключевые Возможности</h2>
+                <p class="text-lg text-gray-400 mt-2">Все, что вам нужно в современном картографическом сервисе.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div class="bg-gray-800/50 p-8 rounded-xl border border-blue-500/20 neon-glow fade-in-up">
+                    <div class="text-blue-400 rounded-full w-12 h-12 flex items-center justify-center mb-4 bg-gray-900 neon-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Developer API</h3>
+                    <p class="text-gray-400">Интегрируйте наши мощные картографические и геолокационные сервисы в ваши приложения с помощью надежного и хорошо документированного API, предоставляя безграничные возможности для кастомизации.</p>
+                </div>
+                <!-- Service Card 2 -->
+                <div class="bg-gray-800/50 p-8 rounded-xl border border-blue-500/20 neon-glow fade-in-up" style="animation-delay: 0.2s;">
+                    <div class="text-blue-400 rounded-full w-12 h-12 flex items-center justify-center mb-4 bg-gray-900 neon-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20v-6M6 20v-8m12 8v-4"></path><path d="M12 4H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-2"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Трафик в реальном времени</h3>
+                    <p class="text-gray-400">Навигируйте умнее с актуальными данными о трафике. Избегайте пробок, получайте точное время прибытия и находите самые быстрые маршруты, обновляемые каждую секунду.</p>
+                </div>
+                <!-- Service Card 3 -->
+                <div class="bg-gray-800/50 p-8 rounded-xl border border-blue-500/20 neon-glow fade-in-up" style="animation-delay: 0.4s;">
+                    <div class="text-blue-400 rounded-full w-12 h-12 flex items-center justify-center mb-4 bg-gray-900 neon-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Офлайн-карты</h3>
+                    <p class="text-gray-400">Нет соединения? Не проблема. Загружайте карты целых регионов и стран, чтобы уверенно ориентироваться, когда вы находитесь вне зоны действия сети или хотите сэкономить трафик.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-900/50 animated-section">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white neon-text">Свяжитесь с нами</h2>
+                <p class="text-lg text-gray-400 mt-2">Есть вопрос или хотите работать с нами? Напишите нам.</p>
+            </div>
+            <div class="max-w-2xl mx-auto fade-in-up">
+                <form action="#" method="POST" class="space-y-6">
+                    <div>
+                        <input type="text" name="name" id="name" placeholder="Ваше имя" class="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition placeholder-gray-500">
+                    </div>
+                    <div>
+                        <input type="email" name="email" id="email" placeholder="Ваш Email" class="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition placeholder-gray-500">
+                    </div>
+                    <div>
+                        <textarea name="message" id="message" rows="4" placeholder="Ваше сообщение" class="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition placeholder-gray-500"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg neon-glow w-full md:w-auto">
+                            Отправить сообщение
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-gray-900 border-t border-blue-500/20">
+    <div class="container mx-auto px-6 py-8">
+        <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+            <div class="mb-4 md:mb-0">
+                <a href="#" class="flex items-center justify-center md:justify-start space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    <span class="text-xl font-bold text-white">MAPsik</span>
+                </a>
+            </div>
+            <div class="text-sm text-gray-500 mb-4 md:mb-0">
+                &copy; 2024 MAPsik. Все права защищены.
+            </div>
+            <div class="flex justify-center space-x-6">
+                <a href="#" class="text-gray-500 hover:text-blue-400 transition-colors"><span class="sr-only">Twitter</span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616v.064c0 2.298 1.634 4.212 3.793 4.649-.418.113-.86.173-1.32.173-.305 0-.6-.03-.89-.086.63 1.883 2.462 3.268 4.633 3.307-1.623 1.275-3.673 2.032-5.9 2.032-.384 0-.76-.023-1.135-.067 2.099 1.353 4.604 2.148 7.321 2.148 8.788 0 13.599-7.277 13.599-13.6 0-.207-.005-.412-.013-.617.932-.67 1.738-1.508 2.384-2.482z"/></svg></a>
+                <a href="#" class="text-gray-500 hover:text-blue-400 transition-colors"><span class="sr-only">GitHub</span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- JavaScript for animations and form handling -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Fade-in animation for sections on scroll
+        const animatedElements = document.querySelectorAll('.fade-in-up');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        animatedElements.forEach(el => observer.observe(el));
+
+        // Registration form handling
+        const registrationForm = document.getElementById('registration-form');
+        const phoneNumberInput = document.getElementById('phone-number');
+        const formMessage = document.getElementById('form-message');
+
+        registrationForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent actual form submission
+
+            if (phoneNumberInput.value.trim() === '') {
+                formMessage.textContent = 'Пожалуйста, введите номер телефона.';
+                formMessage.classList.remove('text-green-400');
+                formMessage.classList.add('text-red-400');
+            } else {
+                formMessage.textContent = 'Код подтверждения отправлен на ваш номер.';
+                formMessage.classList.remove('text-red-400');
+                formMessage.classList.add('text-green-400');
+                phoneNumberInput.value = ''; // Clear input after submission
+            }
+
+            // Hide the message after 3 seconds
+            setTimeout(() => {
+                formMessage.textContent = '';
+            }, 3000);
+        });
+    });
+</script>
+
+</body>
+</html>

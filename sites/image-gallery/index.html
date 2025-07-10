@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Svetlana Petrova — Профессиональный фотограф и блогер</title>
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Playfair Display & Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* Пользовательские стили для расширения Tailwind */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9fafb; /* gray-50 */
+            color: #1f2937; /* gray-800 */
+        }
+        h1, h2, h3, .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        .gallery-item {
+            transition: transform 0.3s ease, opacity 0.4s ease, width 0.3s ease;
+        }
+        .gallery-item.hidden {
+            transform: scale(0.9);
+            opacity: 0;
+            width: 0;
+            height: 0;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+        .gallery-item .overlay {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+        .filter-btn {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .filter-btn.active {
+            background-color: #1f2937; /* gray-800 */
+            color: #ffffff;
+        }
+        
+        /* Стили для лайтбокса (модального окна) */
+        #lightbox {
+            display: none; /* Скрыт по умолчанию */
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.92);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        #lightbox.active {
+            display: flex; /* Показываем при активации */
+        }
+        #lightbox img {
+            max-width: 90vw;
+            max-height: 80vh;
+            object-fit: contain;
+            animation: zoomIn 0.3s ease;
+        }
+        @keyframes zoomIn { from { transform: scale(0.8); } to { transform: scale(1); } }
+        .lightbox-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.2s;
+            padding: 1rem;
+        }
+        .lightbox-control:hover {
+            color: #d1d5db; /* gray-300 */
+        }
+        #lightbox-prev { left: 1vw; }
+        #lightbox-next { right: 1vw; }
+        #lightbox-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2rem;
+        }
+        
+        /* Кнопка "Наверх" */
+        #back-to-top {
+            display: none;
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: #1f2937;
+            color: white;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 3rem;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0.8;
+        }
+        #back-to-top:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+<!-- Header & Navigation -->
+<header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <a href="#" class="text-3xl font-serif font-bold text-gray-800">Svetlana Petrova</a>
+        <div class="md:hidden">
+            <button id="mobile-menu-button" class="text-gray-800 focus:outline-none"><i class="fas fa-bars fa-lg"></i></button>
+        </div>
+        <nav class="hidden md:flex space-x-6 items-center font-medium text-gray-600">
+            <a href="#portfolio" class="hover:text-gray-900 transition duration-300">Портфолио</a>
+            <a href="#about" class="hover:text-gray-900 transition duration-300">Обо мне</a>
+            <a href="#services" class="hover:text-gray-900 transition duration-300">Услуги</a>
+            <a href="#blog" class="hover:text-gray-900 transition duration-300">Блог</a>
+            <a href="#contact" class="bg-gray-800 text-white px-5 py-2 rounded-md hover:bg-gray-900 transition duration-300 font-semibold">Контакты</a>
+        </nav>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+        <a href="#portfolio" class="block py-3 px-6 text-gray-600 hover:bg-gray-50">Портфолио</a>
+        <a href="#about" class="block py-3 px-6 text-gray-600 hover:bg-gray-50">Обо мне</a>
+        <a href="#services" class="block py-3 px-6 text-gray-600 hover:bg-gray-50">Услуги</a>
+        <a href="#blog" class="block py-3 px-6 text-gray-600 hover:bg-gray-50">Блог</a>
+        <a href="#contact" class="block py-3 px-6 text-gray-600 hover:bg-gray-50">Контакты</a>
+    </div>
+</header>
+
+<main>
+    <!-- Hero Section -->
+    <section id="home" class="relative h-[70vh] flex items-center justify-center text-white bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/3225517/pexels-photo-3225517.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');">
+        <div class="absolute inset-0 bg-black opacity-40"></div>
+        <div class="text-center relative z-10 px-4">
+            <h1 class="text-5xl md:text-7xl font-bold leading-tight">Мир через объектив</h1>
+            <p class="text-lg md:text-xl mt-4">Коллекция моментов, пойманных в кадре</p>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800">Портфолио</h2>
+                <p class="text-gray-500 mt-4 max-w-2xl mx-auto">Откройте для себя истории, рассказанные с помощью света и тени. Каждая фотография — это уникальный взгляд на мир.</p>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div id="filter-container" class="flex justify-center flex-wrap gap-2 mb-10">
+                <button class="filter-btn active px-4 py-2 rounded-md border border-gray-300" data-filter="all">Все</button>
+                <button class="filter-btn px-4 py-2 rounded-md border border-gray-300" data-filter="landscapes">Пейзажи</button>
+                <button class="filter-btn px-4 py-2 rounded-md border border-gray-300" data-filter="portraits">Портреты</button>
+                <button class="filter-btn px-4 py-2 rounded-md border border-gray-300" data-filter="cities">Города</button>
+                <button class="filter-btn px-4 py-2 rounded-md border border-gray-300" data-filter="animals">Животные</button>
+            </div>
+
+            <!-- Image Grid -->
+            <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Images will be added here by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/3">
+                    <img src="https://images.pexels.com/photos/3775131/pexels-photo-3775131.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Фотограф Светлана Петрова" class="rounded-lg shadow-xl w-full mx-auto object-cover">
+                </div>
+                <div class="md:w-2/3 text-center md:text-left">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4">Привет, я Светлана Петрова</h2>
+                    <p class="text-gray-600 mb-4 text-lg">Фотография для меня — это не просто работа, а способ видеть и чувствовать мир. Я стремлюсь запечатлеть не просто картинку, а настоящие эмоции, атмосферу и красоту момента.</p>
+                    <h3 class="text-2xl font-bold text-gray-800 mt-6 mb-3">Мой подход</h3>
+                    <p class="text-gray-600">Я верю в естественность и непринужденность. На моих съемках вы не будете чувствовать себя скованно. Моя задача — помочь вам расслабиться и показать вашу истинную сущность. Я работаю со светом, чтобы подчеркнуть вашу уникальность и создать кадры, которые будут радовать вас долгие годы.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800">Услуги и цены</h2>
+                <p class="text-gray-500 mt-4 max-w-2xl mx-auto">Я предлагаю различные виды съемок, чтобы запечатлеть ваши самые важные моменты.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="border border-gray-200 rounded-lg p-8 text-center hover:shadow-xl transition-shadow duration-300">
+                    <i class="fas fa-user text-4xl text-gray-800 mb-4"></i>
+                    <h3 class="text-2xl font-bold mb-2">Индивидуальная съемка</h3>
+                    <p class="text-gray-600 mb-4">2 часа съемки, 20 обработанных фотографий, помощь в подборе образа.</p>
+                    <p class="text-3xl font-bold">15 000 ₽</p>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-8 text-center hover:shadow-xl transition-shadow duration-300">
+                    <i class="fas fa-users text-4xl text-gray-800 mb-4"></i>
+                    <h3 class="text-2xl font-bold mb-2">Семейная / Love Story</h3>
+                    <p class="text-gray-600 mb-4">3 часа съемки на природе или в студии, 30 обработанных фото.</p>
+                    <p class="text-3xl font-bold">25 000 ₽</p>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-8 text-center hover:shadow-xl transition-shadow duration-300">
+                    <i class="fas fa-camera-retro text-4xl text-gray-800 mb-4"></i>
+                    <h3 class="text-2xl font-bold mb-2">Контент-съемка</h3>
+                    <p class="text-gray-600 mb-4">Для блогов и брендов. Разработка концепции, 40+ фото в ретуши.</p>
+                    <p class="text-3xl font-bold">от 30 000 ₽</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800">Мой Блог</h2>
+                <p class="text-gray-500 mt-4 max-w-2xl mx-auto">Делюсь мыслями, советами и историями из мира фотографии.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Blog Post 1 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <a href="#" class="block">
+                        <img src="https://images.pexels.com/photos/775219/pexels-photo-775219.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Фотоаппарат на столе" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-1">15 Мая, 2025</p>
+                            <h3 class="text-xl font-bold mb-2">5 советов по съемке в золотой час</h3>
+                            <p class="text-gray-600">Узнайте, как получить максимум от самого волшебного времени для фотосъемки...</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Blog Post 2 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <a href="#" class="block">
+                        <img src="https://images.pexels.com/photos/935756/pexels-photo-935756.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Портрет девушки" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-1">02 Июня, 2025</p>
+                            <h3 class="text-xl font-bold mb-2">Как раскрепостить модель на съемке</h3>
+                            <p class="text-gray-600">Создание комфортной атмосферы — ключ к естественным и живым портретам...</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Blog Post 3 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <a href="#" class="block">
+                        <img src="https://images.pexels.com/photos/1738675/pexels-photo-1738675.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Объектив фотоаппарата" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500 mb-1">21 Июня, 2025</p>
+                            <h3 class="text-xl font-bold mb-2">Выбор объектива: фикс или зум?</h3>
+                            <p class="text-gray-600">Разбираемся в преимуществах и недостатках разных типов объективов...</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gear Section -->
+    <section id="gear" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800">Мое оборудование</h2>
+                <p class="text-gray-500 mt-4 max-w-2xl mx-auto">Инструменты, которые помогают мне творить магию.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <div class="text-center">
+                    <i class="fas fa-camera text-5xl text-gray-800 mb-4"></i>
+                    <h3 class="text-2xl font-bold">Sony Alpha 7 IV</h3>
+                    <p class="text-gray-600">Надежная и универсальная камера для любых задач.</p>
+                </div>
+                <div class="text-center">
+                    <i class="fas fa-bullseye text-5xl text-gray-800 mb-4"></i>
+                    <h3 class="text-2xl font-bold">Sigma 35mm & 85mm f/1.4</h3>
+                    <p class="text-gray-600">Мои любимые объективы для портретов с красивым боке.</p>
+                </div>
+                <div class="text-center">
+                    <i class="fas fa-plane-departure text-5xl text-gray-800 mb-4"></i>
+                    <h3 class="text-2xl font-bold">DJI Mavic 3</h3>
+                    <p class="text-gray-600">Для захватывающих пейзажей с высоты птичьего полета.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800">Свяжитесь со мной</h2>
+                <p class="text-gray-500 mt-4 max-w-2xl mx-auto">Есть идея для съемки или хотите задать вопрос? Я всегда рада новым знакомствам и проектам.</p>
+            </div>
+            <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-md">
+                <form id="contact-form" class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700">Имя</label>
+                        <input type="text" id="name" name="name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800" required>
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="email" name="email" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800" required>
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-700">Сообщение</label>
+                        <textarea id="message" name="message" rows="4" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800" required></textarea>
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full bg-gray-800 text-white font-bold px-6 py-3 rounded-md hover:bg-gray-900 transition duration-300">Отправить</button>
+                    </div>
+                </form>
+                <div id="form-feedback" class="text-center mt-6"></div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Lightbox Modal -->
+<div id="lightbox">
+    <span id="lightbox-close" class="lightbox-control">&times;</span>
+    <div id="lightbox-prev" class="lightbox-control">&#10094;</div>
+    <div id="lightbox-next" class="lightbox-control">&#10095;</div>
+    <img id="lightbox-image" src="" alt="Просмотр изображения">
+</div>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-white pt-12 pb-8">
+    <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <div>
+                <h3 class="text-xl font-bold font-serif mb-4">Svetlana Petrova</h3>
+                <p class="text-gray-400">Фотограф, который ловит мгновения и превращает их в вечные воспоминания.</p>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold mb-4">Навигация</h3>
+                <ul class="space-y-2">
+                    <li><a href="#portfolio" class="text-gray-400 hover:text-white">Портфолио</a></li>
+                    <li><a href="#about" class="text-gray-400 hover:text-white">Обо мне</a></li>
+                    <li><a href="#services" class="text-gray-400 hover:text-white">Услуги</a></li>
+                    <li><a href="#blog" class="text-gray-400 hover:text-white">Блог</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold mb-4">Социальные сети</h3>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-pinterest"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white text-2xl"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 pt-8 text-center text-gray-500">
+            <p>&copy; 2025 Svetlana Petrova Photography. Все права защищены.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Back to Top Button -->
+<a id="back-to-top" href="#header">
+    <i class="fas fa-arrow-up"></i>
+</a>
+
+<!-- JavaScript for Interactivity -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- Image Data ---
+        const images = [
+            { thumb: 'https://images.pexels.com/photos/3225528/pexels-photo-3225528.jpeg?auto=compress&cs=tinysrgb&w=400', full: 'https://images.pexels.com/photos/3225528/pexels-photo-3225528.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Горный пейзаж', category: 'landscapes' },
+            { thumb: 'https://images.pexels.com/photos/954585/pexels-photo-954585.jpeg?auto=compress&cs=tinysrgb&w=400', full: 'https://images.pexels.com/photos/954585/pexels-photo-954585.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Портрет девушки', category: 'portraits' },
+            { thumb: 'https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg?auto=compress&cs=tinysrgb&w=400', full: 'https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Лиса в снегу', category: 'animals' },
+            { thumb: 'https://images.pexels.com/photos/3408744/pexels-photo-3408744.jpeg?auto=compress&cs=tinysrgb&w=400', full: 'https://images.pexels.com/photos/3408744/pexels-photo-3408744.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Северное сияние', category: 'landscapes' },
+            { thumb: 'https://images.pexels.com/photos/545063/pexels-photo-545063.jpeg?auto=compress&cs=tinysrgb&w=400', full: 'https://images.pexels.com/photos/545063/pexels-photo-545063.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Архитектура города', category: 'cities' },
+            { thumb: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?auto=compress&cs=tinysrgb&w=400', full: 'https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Разноцветное небо', category: 'landscapes' },
+            { thumb: 'https://images.pexels.com/photos/842980/pexels-photo-842980.jpeg?auto=compress&cs=tinysrgb&w=400', full: 'https://images.pexels.com/photos/842980/pexels-photo-842980.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Мужской портрет', category: 'portraits' },
+            { thumb: 'https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=400', full: 'https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Озеро в горах', category: 'landscapes' },
+            { thumb: 'https://images.pexels.com/photos/459203/pexels-photo-459203.jpeg?auto=compress&cs=tinysrgb&w=400', full: 'https://images.pexels.com/photos/459203/pexels-photo-459203.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Олень в лесу', category: 'animals' },
+            { thumb: 'https://images.pexels.com/photos/374845/pexels-photo-374845.jpeg?auto=compress&cs=tinysrgb&w=400', full: 'https://images.pexels.com/photos/374845/pexels-photo-374845.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Ночной город', category: 'cities' },
+            { thumb: 'https://images.pexels.com/photos/1391498/pexels-photo-1391498.jpeg?auto=compress&cs=tinysrgb&w=400', full: 'https://images.pexels.com/photos/1391498/pexels-photo-1391498.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Девушка на пляже', category: 'portraits' },
+            { thumb: 'https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&w=400', full: 'https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Туманное утро', category: 'landscapes' },
+            { thumb: 'https://images.pexels.com/photos/169647/pexels-photo-169647.jpeg?auto=compress&cs=tinysrgb&w=400', full: 'https://images.pexels.com/photos/169647/pexels-photo-169647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Небоскребы', category: 'cities' },
+            { thumb: 'https://images.pexels.com/photos/1031236/pexels-photo-1031236.jpeg?auto=compress&cs=tinysrgb&w=400', full: 'https://images.pexels.com/photos/1031236/pexels-photo-1031236.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Портрет в шляпе', category: 'portraits' },
+            { thumb: 'https://images.pexels.com/photos/66898/elephant-cub-tsavo-kenya-66898.jpeg?auto=compress&cs=tinysrgb&w=400', full: 'https://images.pexels.com/photos/66898/elephant-cub-tsavo-kenya-66898.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Слоненок', category: 'animals' },
+            { thumb: 'https://images.pexels.com/photos/247502/pexels-photo-247502.jpeg?auto=compress&cs=tinysrgb&w=400', full: 'https://images.pexels.com/photos/247502/pexels-photo-247502.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', alt: 'Лев', category: 'animals' }
+        ];
+
+        const galleryGrid = document.getElementById('gallery-grid');
+        const filterContainer = document.getElementById('filter-container');
+        let galleryItems = [];
+
+        function populateGallery() {
+            galleryGrid.innerHTML = '';
+            galleryItems = [];
+            images.forEach((img, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item relative cursor-pointer overflow-hidden rounded-lg shadow-md h-64'; // Fixed height
+                item.dataset.category = img.category;
+                item.innerHTML = `
+                    <img src="${img.thumb}" alt="${img.alt}" class="w-full h-full object-cover transition-transform duration-300 transform hover:scale-110" data-index="${index}">
+                    <div class="overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                        <i class="fas fa-search-plus text-white text-3xl"></i>
+                    </div>
+                `;
+                galleryGrid.appendChild(item);
+                galleryItems.push(item);
+            });
+        }
+
+        function filterGallery(filter) {
+            galleryItems.forEach(item => {
+                const itemCategory = item.dataset.category;
+                if (filter === 'all' || filter === itemCategory) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        }
+
+        filterContainer.addEventListener('click', e => {
+            if (e.target.tagName === 'BUTTON') {
+                document.querySelector('.filter-btn.active').classList.remove('active');
+                e.target.classList.add('active');
+                const filterValue = e.target.dataset.filter;
+                filterGallery(filterValue);
+            }
+        });
+
+        // --- Lightbox Logic ---
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightbox-image');
+        const lightboxClose = document.getElementById('lightbox-close');
+        const lightboxPrev = document.getElementById('lightbox-prev');
+        const lightboxNext = document.getElementById('lightbox-next');
+        let currentIndex = 0;
+
+        function openLightbox(index) {
+            currentIndex = index;
+            lightboxImage.src = images[currentIndex].full;
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+        }
+
+        function showNextImage() {
+            currentIndex = (currentIndex + 1) % images.length;
+            lightboxImage.src = images[currentIndex].full;
+        }
+
+        function showPrevImage() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            lightboxImage.src = images[currentIndex].full;
+        }
+
+        galleryGrid.addEventListener('click', e => {
+            if (e.target.tagName === 'IMG') {
+                openLightbox(parseInt(e.target.dataset.index));
+            }
+        });
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxNext.addEventListener('click', showNextImage);
+        lightboxPrev.addEventListener('click', showPrevImage);
+
+        lightbox.addEventListener('click', e => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        document.addEventListener('keydown', e => {
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowRight') showNextImage();
+                if (e.key === 'ArrowLeft') showPrevImage();
+            }
+        });
+
+        // --- Mobile Menu Toggle ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // --- Contact Form Submission (mock) ---
+        const contactForm = document.getElementById('contact-form');
+        const formFeedback = document.getElementById('form-feedback');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            formFeedback.textContent = 'Спасибо! Ваше сообщение отправлено.';
+            formFeedback.className = 'text-green-600';
+            contactForm.reset();
+            setTimeout(() => { formFeedback.textContent = ''; }, 5000);
+        });
+
+        // --- Back to Top Button ---
+        const backToTopButton = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopButton.style.display = 'block';
+            } else {
+                backToTopButton.style.display = 'none';
+            }
+        });
+
+        // Initial Population of Gallery
+        populateGallery();
+    });
+</script>
+
+</body>
+</html>

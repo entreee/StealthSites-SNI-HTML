@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovatech - Текстовый редактор</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+        }
+        .accent-green {
+            color: #28a745;
+        }
+        .bg-accent-green {
+            background-color: #28a745;
+        }
+        .hover\:bg-accent-green-dark:hover {
+            background-color: #218838;
+        }
+        #editor {
+            background-color: #161b22;
+            color: #c9d1d9;
+            border-radius: 0 0 8px 8px;
+            min-height: 70vh;
+            outline: none;
+            line-height: 1.6;
+        }
+        #editor:focus {
+            box-shadow: 0 0 0 2px #28a745;
+        }
+        .toolbar-button {
+            background: #21262d;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+            width: 40px;
+            height: 40px;
+            transition: all 0.2s ease-in-out;
+        }
+        .toolbar-button:hover, .toolbar-button.active {
+            background: #30363d;
+            color: #fff;
+            border-color: #28a745;
+        }
+        .toolbar-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        /* Custom scrollbar for editor */
+        #editor::-webkit-scrollbar {
+            width: 10px;
+        }
+        #editor::-webkit-scrollbar-track {
+            background: #161b22;
+        }
+        #editor::-webkit-scrollbar-thumb {
+            background-color: #30363d;
+            border-radius: 20px;
+            border: 3px solid #161b22;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+<!-- === Шапка Редактора === -->
+<header class="bg-[#161b22] border-b border-gray-700 shadow-md">
+    <nav class="container mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
+        <a href="#" class="text-2xl font-bold text-white flex items-center">
+            <i class="fas fa-file-alt accent-green mr-3"></i>
+            Innovatech<span class="accent-green">.</span>Editor
+        </a>
+        <div class="flex items-center space-x-2 sm:space-x-4">
+            <button id="save-txt" class="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-300 text-sm font-semibold">
+                <i class="fas fa-download mr-2"></i>.txt
+            </button>
+            <button id="save-html" class="bg-accent-green text-white px-4 py-2 rounded-md hover:bg-accent-green-dark transition duration-300 text-sm font-semibold">
+                <i class="fas fa-code mr-2"></i>.html
+            </button>
+        </div>
+    </nav>
+</header>
+
+<main class="flex-grow container mx-auto px-4 sm:px-6 py-8">
+    <div class="bg-[#0d1117] rounded-lg shadow-2xl border border-gray-700">
+        <!-- === Панель инструментов === -->
+        <div id="toolbar" class="p-2 bg-[#21262d] rounded-t-lg border-b border-gray-700 flex flex-wrap items-center gap-2">
+            <button class="toolbar-button" data-command="bold"><i class="fas fa-bold"></i></button>
+            <button class="toolbar-button" data-command="italic"><i class="fas fa-italic"></i></button>
+            <button class="toolbar-button" data-command="underline"><i class="fas fa-underline"></i></button>
+            <button class="toolbar-button" data-command="strikeThrough"><i class="fas fa-strikethrough"></i></button>
+            <div class="w-px h-6 bg-gray-600"></div>
+            <button class="toolbar-button" data-command="formatBlock" data-value="h1">H1</button>
+            <button class="toolbar-button" data-command="formatBlock" data-value="h2">H2</button>
+            <button class="toolbar-button" data-command="formatBlock" data-value="p">P</button>
+            <div class="w-px h-6 bg-gray-600"></div>
+            <button class="toolbar-button" data-command="insertUnorderedList"><i class="fas fa-list-ul"></i></button>
+            <button class="toolbar-button" data-command="insertOrderedList"><i class="fas fa-list-ol"></i></button>
+            <div class="w-px h-6 bg-gray-600"></div>
+            <button class="toolbar-button" data-command="justifyLeft"><i class="fas fa-align-left"></i></button>
+            <button class="toolbar-button" data-command="justifyCenter"><i class="fas fa-align-center"></i></button>
+            <button class="toolbar-button" data-command="justifyRight"><i class="fas fa-align-right"></i></button>
+            <div class="w-px h-6 bg-gray-600"></div>
+            <button class="toolbar-button" data-command="undo"><i class="fas fa-undo"></i></button>
+            <button class="toolbar-button" data-command="redo"><i class="fas fa-redo"></i></button>
+        </div>
+
+        <!-- === Область для текста === -->
+        <div id="editor" contenteditable="true" class="p-6 sm:p-8 text-lg">
+            <h1 class="text-4xl font-bold mb-4">Ваш новый документ</h1>
+            <p>Начните печатать здесь. Используйте панель инструментов выше для форматирования текста.</p>
+            <p><br></p>
+            <p>Вы можете делать текст <b>жирным</b>, <i>курсивным</i> или <u>подчеркнутым</u>.</p>
+            <ul>
+                <li>Создавайте списки</li>
+                <li>Они очень удобны</li>
+            </ul>
+            <p>И многое другое...</p>
+        </div>
+    </div>
+</main>
+
+<!-- === Статус-бар === -->
+<footer class="bg-[#161b22] border-t border-gray-700 text-gray-400 py-2">
+    <div class="container mx-auto px-4 sm:px-6 text-sm text-right">
+        <span id="word-count">0 слов</span> | <span id="char-count">0 символов</span>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const editor = document.getElementById('editor');
+        const toolbar = document.getElementById('toolbar');
+        const wordCountEl = document.getElementById('word-count');
+        const charCountEl = document.getElementById('char-count');
+
+        // Обработка кликов по панели инструментов
+        toolbar.addEventListener('click', (e) => {
+            const button = e.target.closest('.toolbar-button');
+            if (!button) return;
+
+            const command = button.dataset.command;
+            const value = button.dataset.value || null;
+
+            document.execCommand(command, false, value);
+            editor.focus();
+        });
+
+        // Обновление счетчиков слов и символов
+        const updateCounts = () => {
+            const text = editor.innerText;
+            const charCount = text.length;
+            const wordCount = text.trim().split(/\s+/).filter(word => word.length > 0).length;
+
+            wordCountEl.textContent = `${wordCount} слов`;
+            charCountEl.textContent = `${charCount} символов`;
+        };
+
+        editor.addEventListener('input', updateCounts);
+        updateCounts(); // Первоначальный подсчет
+
+        // Функция для скачивания файла
+        const downloadFile = (filename, content, mimeType) => {
+            const a = document.createElement('a');
+            const blob = new Blob([content], { type: mimeType });
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        };
+
+        // Кнопки сохранения
+        document.getElementById('save-txt').addEventListener('click', () => {
+            const content = editor.innerText;
+            downloadFile('document.txt', content, 'text/plain');
+        });
+
+        document.getElementById('save-html').addEventListener('click', () => {
+            const content = editor.innerHTML;
+            const html = `
+                <!DOCTYPE html>
+                <html lang="ru">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Document</title>
+                    <style>
+                        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 20px auto; }
+                        h1, h2 { border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+                    </style>
+                </head>
+                <body>
+                    ${content}
+                </body>
+                </html>
+            `;
+            downloadFile('document.html', html, 'text/html');
+        });
+    });
+</script>
+</body>
+</html>

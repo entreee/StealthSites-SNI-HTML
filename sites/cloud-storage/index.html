@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyVault — Ваши файлы, безопасно в облаке</title>
+    <meta name="description" content="SkyVault предлагает безопасное и доступное облачное хранилище для всех ваших файлов и документов.">
+    <meta name="keywords" content="облачное хранилище, хранение файлов, резервное копирование, синхронизация файлов, безопасность данных, SkyVault">
+    <meta name="author" content="SkyVault Innovations">
+
+    <!-- Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Google Fonts - Poppins (для заголовков) и Open Sans (для текста) -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Пользовательские стили для более чистого и современного вида */
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: #333;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Эффект наведения для кнопок */
+        .btn-primary {
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-primary:hover {
+            background-color: #1e40af; /* Темнее синий */
+            transform: translateY(-2px);
+        }
+
+        /* Эффект появления при прокрутке */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Плавная прокрутка для якорных ссылок */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+<!-- Заголовок и навигация -->
+<header class="bg-white shadow-sm fixed w-full z-50">
+    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <!-- Логотип (текстовый заполнитель) -->
+        <a href="#" class="flex items-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+            <span class="text-2xl font-bold text-gray-800">SkyVault</span>
+        </a>
+
+        <!-- Навигация для настольных компьютеров -->
+        <div class="hidden md:flex space-x-8">
+            <a href="#features" class="text-gray-600 hover:text-blue-700 transition duration-300">Возможности</a>
+            <a href="#pricing" class="text-gray-600 hover:text-blue-700 transition duration-300">Тарифы</a>
+            <a href="#contact" class="text-gray-600 hover:text-blue-700 transition duration-300">Контакты</a>
+            <a href="#" class="text-blue-700 hover:text-blue-900 transition duration-300 font-semibold">Войти</a>
+            <a href="#" class="bg-blue-700 text-white py-2 px-4 rounded-full hover:bg-blue-800 transition duration-300">Зарегистрироваться</a>
+        </div>
+
+        <!-- Кнопка мобильного меню (гамбургер) -->
+        <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+            <i class="fas fa-bars text-2xl"></i>
+        </button>
+    </nav>
+
+    <!-- Наложение мобильного меню -->
+    <div id="mobile-menu" class="hidden md:hidden fixed inset-0 bg-white bg-opacity-95 z-40 flex flex-col items-center justify-center space-y-8 text-xl">
+        <button id="close-mobile-menu" class="absolute top-6 right-6 text-gray-600 focus:outline-none">
+            <i class="fas fa-times text-3xl"></i>
+        </button>
+        <a href="#features" class="text-gray-800 hover:text-blue-700 transition duration-300" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Возможности</a>
+        <a href="#pricing" class="text-gray-800 hover:text-blue-700 transition duration-300" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Тарифы</a>
+        <a href="#contact" class="text-gray-800 hover:text-blue-700 transition duration-300" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Контакты</a>
+        <a href="#" class="text-blue-700 hover:text-blue-900 transition duration-300 font-semibold" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Войти</a>
+        <a href="#" class="bg-blue-700 text-white py-2 px-4 rounded-full hover:bg-blue-800 transition duration-300" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Зарегистрироваться</a>
+    </div>
+</header>
+
+<!-- Секция "Герой" -->
+<section class="bg-gradient-to-r from-blue-700 to-blue-500 text-white py-24 md:py-32 flex items-center min-h-screen pt-24">
+    <div class="container mx-auto px-6 text-center">
+        <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-6 fade-in-section">
+            Ваши файлы, безопасно в облаке.
+        </h1>
+        <p class="text-lg md:text-xl max-w-3xl mx-auto mb-10 opacity-90 fade-in-section" style="animation-delay: 0.2s;">
+            SkyVault предлагает простое, безопасное и надежное решение для хранения, синхронизации и обмена всеми вашими важными файлами.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 fade-in-section" style="animation-delay: 0.4s;">
+            <a href="#" class="inline-block bg-white text-blue-700 py-3 px-8 rounded-full font-bold text-lg btn-primary shadow-lg">
+                Начать бесплатно <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+            <a href="#features" class="inline-block border-2 border-white text-white py-3 px-8 rounded-full font-bold text-lg hover:bg-white hover:text-blue-700 transition duration-300">
+                Узнать больше
+            </a>
+        </div>
+        <div class="mt-16 fade-in-section" style="animation-delay: 0.6s;">
+            <img src="https://images.unsplash.com/photo-1517841961477-9d7a22026859?auto=format&fit=crop&w=1200&q=80" alt="Интерфейс SkyVault" class="rounded-lg shadow-2xl mx-auto max-w-full h-auto">
+        </div>
+    </div>
+</section>
+
+<!-- Секция "Возможности" -->
+<section id="features" class="py-20 md:py-24 bg-gray-50">
+    <div class="container mx-auto px-6">
+        <h2 class="text-4xl font-bold text-gray-800 text-center mb-12 fade-in-section">Почему выбирают SkyVault?</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Карта возможности 1: Безопасность -->
+            <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 fade-in-section">
+                <div class="text-blue-700 text-5xl mb-6"><i class="fas fa-lock"></i></div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3">Надежная безопасность</h3>
+                <p class="text-gray-700">
+                    Ваши данные защищены сквозным шифрованием и многофакторной аутентификацией.
+                </p>
+            </div>
+            <!-- Карта возможности 2: Доступность -->
+            <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 fade-in-section" style="animation-delay: 0.1s;">
+                <div class="text-blue-700 text-5xl mb-6"><i class="fas fa-mobile-alt"></i></div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3">Доступ отовсюду</h3>
+                <p class="text-gray-700">
+                    Получайте доступ к своим файлам с любого устройства — компьютера, планшета или смартфона.
+                </p>
+            </div>
+            <!-- Карта возможности 3: Совместная работа -->
+            <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 fade-in-section" style="animation-delay: 0.2s;">
+                <div class="text-blue-700 text-5xl mb-6"><i class="fas fa-users"></i></div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3">Простая совместная работа</h3>
+                <p class="text-gray-700">
+                    Легко делитесь файлами и папками с коллегами, друзьями или семьей.
+                </p>
+            </div>
+            <!-- Карта возможности 4: Синхронизация -->
+            <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 fade-in-section" style="animation-delay: 0.3s;">
+                <div class="text-blue-700 text-5xl mb-6"><i class="fas fa-sync-alt"></i></div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3">Автоматическая синхронизация</h3>
+                <p class="text-gray-700">
+                    Все ваши изменения мгновенно синхронизируются на всех подключенных устройствах.
+                </p>
+            </div>
+            <!-- Карта возможности 5: Резервное копирование -->
+            <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 fade-in-section" style="animation-delay: 0.4s;">
+                <div class="text-blue-700 text-5xl mb-6"><i class="fas fa-cloud-upload-alt"></i></div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3">Надежное резервное копирование</h3>
+                <p class="text-gray-700">
+                    Никогда не теряйте свои файлы благодаря автоматическому резервному копированию.
+                </p>
+            </div>
+            <!-- Карта возможности 6: Контроль версий -->
+            <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 fade-in-section" style="animation-delay: 0.5s;">
+                <div class="text-blue-700 text-5xl mb-6"><i class="fas fa-history"></i></div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3">Контроль версий</h3>
+                <p class="text-gray-700">
+                    Восстанавливайте предыдущие версии файлов и отслеживайте изменения с легкостью.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Секция "Тарифы" -->
+<section id="pricing" class="py-20 md:py-24 bg-blue-700 text-white">
+    <div class="container mx-auto px-6">
+        <h2 class="text-4xl font-bold text-center mb-12 fade-in-section">Выберите свой план SkyVault</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- План 1: Бесплатный -->
+            <div class="bg-white text-gray-800 p-8 rounded-lg shadow-xl text-center fade-in-section">
+                <h3 class="text-3xl font-bold mb-4">Бесплатный</h3>
+                <p class="text-5xl font-bold mb-6">$0<span class="text-xl font-normal">/месяц</span></p>
+                <ul class="text-left space-y-3 mb-8">
+                    <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> 5 ГБ хранилища</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Базовая синхронизация</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Обмен файлами</li>
+                    <li class="flex items-center text-gray-500"><i class="fas fa-times-circle mr-2"></i> Расширенная безопасность</li>
+                    <li class="flex items-center text-gray-500"><i class="fas fa-times-circle mr-2"></i> Приоритетная поддержка</li>
+                </ul>
+                <a href="#" class="inline-block bg-blue-700 text-white py-3 px-8 rounded-full font-bold btn-primary">
+                    Начать бесплатно
+                </a>
+            </div>
+            <!-- План 2: Pro (Рекомендуется) -->
+            <div class="bg-blue-800 text-white p-8 rounded-lg shadow-xl text-center transform scale-105 border-4 border-yellow-400 fade-in-section" style="animation-delay: 0.1s;">
+                <p class="text-sm font-semibold text-yellow-400 mb-2">Рекомендуется</p>
+                <h3 class="text-3xl font-bold mb-4">Pro</h3>
+                <p class="text-5xl font-bold mb-6">$9.99<span class="text-xl font-normal">/месяц</span></p>
+                <ul class="text-left space-y-3 mb-8">
+                    <li class="flex items-center"><i class="fas fa-check-circle text-yellow-400 mr-2"></i> 2 ТБ хранилища</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-yellow-400 mr-2"></i> Расширенная синхронизация</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-yellow-400 mr-2"></i> Расширенный обмен</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-yellow-400 mr-2"></i> Расширенная безопасность</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-yellow-400 mr-2"></i> Приоритетная поддержка</li>
+                </ul>
+                <a href="#" class="inline-block bg-yellow-400 text-blue-800 py-3 px-8 rounded-full font-bold hover:bg-yellow-500 transition duration-300">
+                    Выбрать Pro
+                </a>
+            </div>
+            <!-- План 3: Бизнес -->
+            <div class="bg-white text-gray-800 p-8 rounded-lg shadow-xl text-center fade-in-section" style="animation-delay: 0.2s;">
+                <h3 class="text-3xl font-bold mb-4">Бизнес</h3>
+                <p class="text-5xl font-bold mb-6">$19.99<span class="text-xl font-normal">/месяц</span></p>
+                <ul class="text-left space-y-3 mb-8">
+                    <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> 5 ТБ+ хранилища</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Все возможности Pro</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Управление командами</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Аудит и отчетность</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Выделенный менеджер</li>
+                </ul>
+                <a href="#" class="inline-block bg-blue-700 text-white py-3 px-8 rounded-full font-bold btn-primary">
+                    Связаться с нами
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Секция "Отзывы" -->
+<section class="py-20 md:py-24 bg-gray-50">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-4xl font-bold text-gray-800 mb-12 fade-in-section">Что говорят наши клиенты</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Отзыв 1 -->
+            <div class="bg-white p-8 rounded-lg shadow-md fade-in-section">
+                <p class="text-gray-700 italic mb-6">
+                    "SkyVault полностью изменил способ хранения и обмена файлами в нашей команде. Безопасность на высшем уровне, а синхронизация работает безупречно!"
+                </p>
+                <div class="flex items-center justify-center">
+                    <img src="https://placehold.co/60x60/e0e0e0/ffffff?text=АП" alt="Аватар клиента" class="w-12 h-12 rounded-full mr-4">
+                    <div>
+                        <p class="font-bold text-gray-800">Анна Петрова</p>
+                        <p class="text-sm text-gray-600">Менеджер проекта, TechCorp</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Отзыв 2 -->
+            <div class="bg-white p-8 rounded-lg shadow-md fade-in-section" style="animation-delay: 0.1s;">
+                <p class="text-gray-700 italic mb-6">
+                    "Я использую SkyVault для личных файлов уже год, и это лучший сервис. Очень простой в использовании и я всегда уверен, что мои данные в безопасности."
+                </p>
+                <div class="flex items-center justify-center">
+                    <img src="https://placehold.co/60x60/e0e0e0/ffffff?text=ИВ" alt="Аватар клиента" class="w-12 h-12 rounded-full mr-4">
+                    <div>
+                        <p class="font-bold text-gray-800">Иван Васильев</p>
+                        <p class="text-sm text-gray-600">Фрилансер</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Секция "Призыв к действию" -->
+<section class="bg-blue-600 text-white py-16 text-center">
+    <div class="container mx-auto px-6 fade-in-section">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Начните использовать SkyVault сегодня!</h2>
+        <p class="text-lg mb-8 opacity-90">
+            Присоединяйтесь к тысячам пользователей, которые доверяют SkyVault свои самые важные файлы.
+        </p>
+        <a href="#" class="inline-block bg-white text-blue-600 py-3 px-8 rounded-full font-bold text-lg btn-primary shadow-lg">
+            Зарегистрироваться бесплатно <i class="fas fa-sign-in-alt ml-2"></i>
+        </a>
+    </div>
+</section>
+
+<!-- Секция "Контакты" -->
+<section id="contact" class="py-20 md:py-24 bg-white">
+    <div class="container mx-auto px-6">
+        <h2 class="text-4xl font-bold text-gray-800 text-center mb-12 fade-in-section">Свяжитесь с нами</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div class="fade-in-section">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">Наши контакты</h3>
+                <p class="text-gray-700 mb-4 flex items-center"><i class="fas fa-map-marker-alt text-blue-700 mr-3 text-lg"></i> 123 Облачная улица, Офис 101, Город Инноваций, 12345</p>
+                <p class="text-gray-700 mb-4 flex items-center"><i class="fas fa-phone-alt text-blue-700 mr-3 text-lg"></i> <a href="tel:+15559876543" class="hover:underline">+1 (555) 987-6543</a></p>
+                <p class="text-gray-700 mb-8 flex items-center"><i class="fas fa-envelope text-blue-700 mr-3 text-lg"></i> <a href="mailto:support@skyvault.com" class="hover:underline">support@skyvault.com</a></p>
+
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">Часы работы</h3>
+                <p class="text-gray-700">Понедельник - Пятница: 9:00 - 18:00 (МСК)</p>
+                <p class="text-gray-700">Суббота - Воскресенье: Закрыто</p>
+            </div>
+
+            <div class="fade-in-section" style="animation-delay: 0.2s;">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">Отправьте нам сообщение</h3>
+                <form class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Имя</label>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ваше имя" required>
+                    </div>
+                    <div>
+                        <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                        <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ваш Email" required>
+                    </div>
+                    <div>
+                        <label for="message" class="block text-gray-700 text-sm font-bold mb-2">Сообщение</label>
+                        <textarea id="message" name="message" rows="6" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ваше сообщение" required></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-700 text-white py-3 px-6 rounded-lg font-bold text-lg btn-primary shadow-lg">
+                        Отправить сообщение <i class="fas fa-paper-plane ml-2"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Футер -->
+<footer class="bg-gray-800 text-gray-400 py-10 text-center">
+    <div class="container mx-auto px-6">
+        <p>&copy; 2025 SkyVault. Все права защищены.</p>
+        <p class="mt-2">Ваши файлы, безопасно в облаке.</p>
+        <div class="flex justify-center space-x-6 mt-4">
+            <a href="#" class="text-gray-400 hover:text-white transition duration-300"><i class="fab fa-facebook-f text-xl"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition duration-300"><i class="fab fa-twitter text-xl"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition duration-300"><i class="fab fa-linkedin-in text-xl"></i></a>
+        </div>
+    </div>
+</footer>
+
+<!-- Ванильный JavaScript для интерактивности -->
+<script>
+    // Переключение мобильного меню
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const closeMobileMenuButton = document.getElementById('close-mobile-menu');
+
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Предотвратить прокрутку, когда мобильное меню открыто
+    });
+
+    closeMobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        document.body.style.overflow = ''; // Восстановить прокрутку
+    });
+
+    // Закрыть мобильное меню при нажатии на ссылку
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            document.body.style.overflow = ''; // Восстановить прокрутку
+        });
+    });
+
+    // Эффект появления при прокрутке
+    const fadeInSections = document.querySelectorAll('.fade-in-section');
+
+    const observerOptions = {
+        root: null, // область просмотра
+        rootMargin: '0px',
+        threshold: 0.1 // 10% секции должно быть видно, чтобы сработать
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target); // Прекратить наблюдение после того, как станет видимым
+            }
+        });
+    }, observerOptions);
+
+    fadeInSections.forEach(section => {
+        observer.observe(section);
+    });
+</script>
+</body>
+</html>

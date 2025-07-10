@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News-For-All | Ваша ежедневная сводка новостей</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb; /* Светло-серый фон */
+            color: #1f2937;
+        }
+        .ios-card {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+            transition: all 0.3s ease-in-out;
+            overflow: hidden;
+        }
+        .ios-card:hover {
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            transform: translateY(-4px);
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #3b82f6; /* Синий акцент */
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .tag {
+            background-color: #eef2ff;
+            color: #4f46e5;
+            transition: all 0.2s ease;
+        }
+        .tag:hover {
+            background-color: #e0e7ff;
+            color: #4338ca;
+        }
+        .live-badge {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+<!-- Header -->
+<header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
+    <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+        <a href="#" class="text-2xl font-bold text-gray-900">
+            News-For-All
+        </a>
+        <nav class="hidden lg:flex items-center space-x-8">
+            <a href="#hero" class="text-gray-600 hover:text-blue-500 nav-link active">Главная</a>
+            <a href="#latest" class="text-gray-600 hover:text-blue-500 nav-link">Последнее</a>
+            <a href="#opinions" class="text-gray-600 hover:text-blue-500 nav-link">Мнения</a>
+            <a href="#video" class="text-gray-600 hover:text-blue-500 nav-link">Видео</a>
+            <a href="#categories" class="text-gray-600 hover:text-blue-500 nav-link">Категории</a>
+        </nav>
+        <div class="flex items-center space-x-4">
+            <div class="hidden sm:flex items-center space-x-2 text-sm text-gray-600">
+                <i class="fas fa-cloud-sun"></i>
+                <span>+19°C, Тирана</span>
+            </div>
+            <button class="text-gray-600 hover:text-blue-500">
+                <i class="fas fa-search text-xl"></i>
+            </button>
+            <button id="mobile-menu-button" class="lg:hidden text-gray-700 focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden px-6 pt-2 pb-4 border-t border-gray-200">
+        <a href="#hero" class="block py-2 text-gray-600 hover:text-blue-500">Главная</a>
+        <a href="#latest" class="block py-2 text-gray-600 hover:text-blue-500">Последнее</a>
+        <a href="#opinions" class="block py-2 text-gray-600 hover:text-blue-500">Мнения</a>
+        <a href="#video" class="block py-2 text-gray-600 hover:text-blue-500">Видео</a>
+        <a href="#categories" class="block py-2 text-gray-600 hover:text-blue-500">Категории</a>
+    </div>
+</header>
+
+<!-- Breaking News Bar -->
+<div class="bg-red-600 text-white py-2">
+    <div class="container mx-auto px-6 flex items-center">
+        <span class="font-bold uppercase tracking-wider live-badge">СРОЧНО</span>
+        <a href="#" class="ml-4 text-sm hover:underline">На центральном банке объявлено о внеплановом изменении ключевой ставки.</a>
+    </div>
+</div>
+
+<!-- Main Content -->
+<main>
+
+    <!-- Hero Section -->
+    <section id="hero" class="py-12 md:py-16 fade-in-section is-visible">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Main Story -->
+                <div class="lg:col-span-2 ios-card">
+                    <a href="#" class="block group">
+                        <img src="https://images.pexels.com/photos/159888/pexels-photo-159888.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="[Изображение глобальной сети]" class="w-full h-64 md:h-96 object-cover">
+                        <div class="p-6">
+                            <span class="text-sm font-semibold text-blue-500">ТЕХНОЛОГИИ</span>
+                            <h1 class="text-2xl md:text-4xl font-bold text-gray-900 mt-2 group-hover:text-blue-600 transition-colors">Прорыв в квантовых вычислениях: что это значит для будущего?</h1>
+                            <p class="text-gray-600 mt-4">Новое исследование открывает двери для создания сверхмощных компьютеров, способных решать задачи, недоступные современным технологиям. Эксперты обсуждают потенциальные риски и возможности.</p>
+                            <p class="text-sm text-gray-500 mt-4">Иван Петров • 10 июля 2025</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Side Stories -->
+                <div class="space-y-8">
+                    <div class="ios-card">
+                        <a href="#" class="block group">
+                            <img src="https://images.pexels.com/photos/793785/pexels-photo-793785.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="[Изображение фондового рынка]" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <span class="text-sm font-semibold text-green-500">БИЗНЕС</span>
+                                <h2 class="text-lg font-semibold text-gray-800 mt-1 group-hover:text-blue-600 transition-colors">Мировые рынки показывают стабильный рост на фоне новых экономических данных</h2>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="ios-card">
+                        <a href="#" class="block group">
+                            <img src="https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="[Изображение человека в лаборатории]" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <span class="text-sm font-semibold text-red-500">ЗДОРОВЬЕ</span>
+                                <h2 class="text-lg font-semibold text-gray-800 mt-1 group-hover:text-blue-600 transition-colors">Ученые назвали 5 простых привычек для продления жизни</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest News Section -->
+    <section id="latest" class="py-16 md:py-24 bg-white fade-in-section">
+        <div class="container mx-auto px-6">
+            <div class="mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Последние новости</h2>
+                <p class="text-lg text-gray-600 mt-2">Самые свежие материалы от нашей редакции.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Large Article -->
+                <div class="ios-card lg:col-span-2">
+                    <a href="#" class="block group">
+                        <img src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="[Изображение деловой встречи]" class="w-full h-64 object-cover">
+                        <div class="p-6">
+                            <span class="text-sm font-semibold text-purple-500">ПОЛИТИКА</span>
+                            <h3 class="text-2xl font-semibold text-gray-800 mt-2 group-hover:text-blue-600">Новый законопроект о цифровой приватности прошел первое чтение</h3>
+                            <p class="text-gray-600 mt-3 text-base">Обсуждаются новые правила сбора и использования данных пользователей в интернете, что может кардинально изменить цифровой ландшафт.</p>
+                            <div class="text-sm text-gray-500 mt-4">Анна Сидорова • 3 мин чтения</div>
+                        </div>
+                    </a>
+                </div>
+                <!-- Small Articles -->
+                <div class="ios-card">
+                    <a href="#" class="block group">
+                        <img src="https://images.pexels.com/photos/110854/pexels-photo-110854.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="[Изображение космоса]" class="w-full h-40 object-cover">
+                        <div class="p-4">
+                            <span class="text-sm font-semibold text-blue-500">НАУКА</span>
+                            <h3 class="text-lg font-semibold text-gray-800 mt-2 group-hover:text-blue-600">Найдена экзопланета с пригодными для жизни условиями</h3>
+                            <div class="text-xs text-gray-500 mt-4">Сергей Волков • 5 мин чтения</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="ios-card">
+                    <a href="#" class="block group">
+                        <img src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="[Изображение здоровой еды]" class="w-full h-40 object-cover">
+                        <div class="p-4">
+                            <span class="text-sm font-semibold text-red-500">ЗДОРОВЬЕ</span>
+                            <h3 class="text-lg font-semibold text-gray-800 mt-2 group-hover:text-blue-600">Мифы о правильном питании развенчаны</h3>
+                            <div class="text-xs text-gray-500 mt-4">Елена Кузнецова • 4 мин чтения</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="ios-card">
+                    <a href="#" class="block group">
+                        <img src="https://images.pexels.com/photos/210243/pexels-photo-210243.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="[Изображение стадиона]" class="w-full h-40 object-cover">
+                        <div class="p-4">
+                            <span class="text-sm font-semibold text-yellow-500">СПОРТ</span>
+                            <h3 class="text-lg font-semibold text-gray-800 mt-2 group-hover:text-blue-600">Финал ЧМ завершился серией пенальти</h3>
+                            <div class="text-xs text-gray-500 mt-4">Максим Лебедев • 6 мин чтения</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="ios-card">
+                    <a href="#" class="block group">
+                        <img src="https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="[Изображение рабочего стола с кодом]" class="w-full h-40 object-cover">
+                        <div class="p-4">
+                            <span class="text-sm font-semibold text-blue-500">ТЕХНОЛОГИИ</span>
+                            <h3 class="text-lg font-semibold text-gray-800 mt-2 group-hover:text-blue-600">Open-source проект бросает вызов гигантам</h3>
+                            <div class="text-xs text-gray-500 mt-4">Ольга Мельникова • 5 мин чтения</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Opinions Section -->
+    <section id="opinions" class="py-16 md:py-24 bg-gray-50 fade-in-section">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Мнения</h2>
+                <p class="text-lg text-gray-600 mt-2">Авторские колонки от наших экспертов.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Opinion 1 -->
+                <div class="text-center">
+                    <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="[Фото автора]" class="w-24 h-24 rounded-full mx-auto shadow-lg">
+                    <div class="mt-4">
+                        <h4 class="text-xl font-semibold">Виктор Соколов</h4>
+                        <p class="text-sm text-gray-500">Экономический аналитик</p>
+                        <p class="text-gray-700 mt-3 italic">"Нынешняя волатильность рынка — это не кризис, а коррекция, открывающая новые возможности для инвесторов."</p>
+                    </div>
+                </div>
+                <!-- Opinion 2 -->
+                <div class="text-center">
+                    <img src="https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="[Фото автора]" class="w-24 h-24 rounded-full mx-auto shadow-lg">
+                    <div class="mt-4">
+                        <h4 class="text-xl font-semibold">Мария Новикова</h4>
+                        <p class="text-sm text-gray-500">IT-футуролог</p>
+                        <p class="text-gray-700 mt-3 italic">"Мы недооцениваем скорость, с которой искусственный интеллект изменит рынок труда. Готовиться нужно уже вчера."</p>
+                    </div>
+                </div>
+                <!-- Opinion 3 -->
+                <div class="text-center">
+                    <img src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="[Фото автора]" class="w-24 h-24 rounded-full mx-auto shadow-lg">
+                    <div class="mt-4">
+                        <h4 class="text-xl font-semibold">Алексей Фёдоров</h4>
+                        <p class="text-sm text-gray-500">Политолог</p>
+                        <p class="text-gray-700 mt-3 italic">"Цифровая дипломатия становится ключевым инструментом в международных отношениях XXI века."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video News Section -->
+    <section id="video" class="py-16 md:py-24 bg-white fade-in-section">
+        <div class="container mx-auto px-6">
+            <div class="mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Видеоновости</h2>
+                <p class="text-lg text-gray-600 mt-2">Главные события в видеоформате.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Main Video -->
+                <div class="lg:col-span-2 ios-card">
+                    <a href="#" class="block group relative">
+                        <img src="https://images.pexels.com/photos/251225/pexels-photo-251225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="[Видео-превью запуска ракеты]" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                            <i class="fas fa-play-circle text-white text-7xl opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all"></i>
+                        </div>
+                        <div class="absolute bottom-0 left-0 p-6">
+                            <h3 class="text-2xl font-bold text-white">Запуск новой космической миссии: прямая трансляция</h3>
+                        </div>
+                    </a>
+                </div>
+                <!-- Video Playlist -->
+                <div class="space-y-4">
+                    <a href="#" class="flex items-center group ios-card p-3">
+                        <img src="https://images.pexels.com/photos/276452/pexels-photo-276452.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="[Видео-превью]" class="w-28 h-20 object-cover rounded-lg">
+                        <div class="ml-4">
+                            <h4 class="font-semibold group-hover:text-blue-600">Обзор нового электромобиля</h4>
+                            <p class="text-sm text-gray-500">12:34</p>
+                        </div>
+                    </a>
+                    <a href="#" class="flex items-center group ios-card p-3">
+                        <img src="https://images.pexels.com/photos/3184398/pexels-photo-3184398.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="[Видео-превью]" class="w-28 h-20 object-cover rounded-lg">
+                        <div class="ml-4">
+                            <h4 class="font-semibold group-hover:text-blue-600">Круглый стол по экономике</h4>
+                            <p class="text-sm text-gray-500">45:12</p>
+                        </div>
+                    </a>
+                    <a href="#" class="flex items-center group ios-card p-3">
+                        <img src="https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="[Видео-превью]" class="w-28 h-20 object-cover rounded-lg">
+                        <div class="ml-4">
+                            <h4 class="font-semibold group-hover:text-blue-600">Лучшие моменты недели в спорте</h4>
+                            <p class="text-sm text-gray-500">08:55</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trending Topics Section -->
+    <section id="trending" class="py-16 md:py-24 bg-gray-50 fade-in-section">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">В тренде</h2>
+                <p class="text-lg text-gray-600 mt-2">Самые обсуждаемые темы прямо сейчас.</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-3">
+                <a href="#" class="tag font-semibold py-2 px-4 rounded-full">#ИскусственныйИнтеллект</a>
+                <a href="#" class="tag font-semibold py-2 px-4 rounded-full">#Экономика</a>
+                <a href="#" class="tag font-semibold py-2 px-4 rounded-full">#Выборы2025</a>
+                <a href="#" class="tag font-semibold py-2 px-4 rounded-full">#ИзменениеКлимата</a>
+                <a href="#" class="tag font-semibold py-2 px-4 rounded-full">#Космос</a>
+                <a href="#" class="tag font-semibold py-2 px-4 rounded-full">#Здравоохранение</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Subscription Section -->
+    <section id="newsletter" class="py-16 md:py-24 bg-blue-600 text-white fade-in-section">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold">Не пропускайте главное</h2>
+            <p class="text-lg text-blue-200 mt-4 max-w-2xl mx-auto">Подпишитесь на нашу рассылку, чтобы получать лучшие материалы недели прямо на почту.</p>
+            <form class="mt-8 max-w-lg mx-auto">
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <input type="email" placeholder="Ваш email" class="w-full px-5 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300" required>
+                    <button type="submit" class="bg-white text-blue-600 font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition-colors">
+                        Подписаться
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section id="categories" class="py-16 md:py-24 bg-white fade-in-section">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Все категории</h2>
+                <p class="text-lg text-gray-600 mt-2">Найдите новости, которые интересны именно вам.</p>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
+                <a href="#" class="ios-card p-6 text-center group">
+                    <i class="fas fa-microchip text-4xl text-blue-500 mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-lg font-semibold text-gray-800">Технологии</h3>
+                </a>
+                <a href="#" class="ios-card p-6 text-center group">
+                    <i class="fas fa-briefcase text-4xl text-green-500 mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-lg font-semibold text-gray-800">Бизнес</h3>
+                </a>
+                <a href="#" class="ios-card p-6 text-center group">
+                    <i class="fas fa-landmark text-4xl text-purple-500 mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-lg font-semibold text-gray-800">Политика</h3>
+                </a>
+                <a href="#" class="ios-card p-6 text-center group">
+                    <i class="fas fa-futbol text-4xl text-yellow-500 mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-lg font-semibold text-gray-800">Спорт</h3>
+                </a>
+                <a href="#" class="ios-card p-6 text-center group">
+                    <i class="fas fa-globe-americas text-4xl text-gray-500 mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-lg font-semibold text-gray-800">Мир</h3>
+                </a>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-gray-800 text-white">
+    <div class="container mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <h3 class="text-xl font-bold">News-For-All</h3>
+                <p class="text-gray-400 mt-2">Ваша ежедневная сводка новостей.</p>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-200">Навигация</h4>
+                <ul class="mt-4 space-y-2">
+                    <li><a href="#hero" class="text-gray-400 hover:text-white">Главная</a></li>
+                    <li><a href="#latest" class="text-gray-400 hover:text-white">Последнее</a></li>
+                    <li><a href="#categories" class="text-gray-400 hover:text-white">Категории</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-200">О компании</h4>
+                <ul class="mt-4 space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white">О нас</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Контакты</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Политика конфиденциальности</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Условия использования</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold text-gray-200">Мы в соцсетях</h4>
+                <div class="flex mt-4 space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-twitter text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-facebook-f text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-linkedin-in text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-telegram text-xl"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-500">
+            <p>&copy; 2025 News-For-All. Все права защищены.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- JavaScript for Interactivity -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Smooth Scroll for Navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    // Close mobile menu on click
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Fade-in on Scroll Animation
+        const sections = document.querySelectorAll('.fade-in-section');
+        const observer = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Active Nav Link Highlighting on Scroll
+        const navLinks = document.querySelectorAll('nav a.nav-link');
+        const scrollObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        const linkId = link.getAttribute('href').split('#')[1];
+                        if (linkId === entry.target.id) {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active');
+                        }
+                    });
+                }
+            });
+        }, { rootMargin: "-50% 0px -50% 0px", threshold: 0.3 });
+
+        document.querySelectorAll('main section').forEach(section => {
+            scrollObserver.observe(section);
+        });
+    });
+</script>
+
+</body>
+</html>
